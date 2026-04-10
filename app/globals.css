@@ -1,0 +1,142 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Playfair+Display:wght@700&display=swap');
+
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "DM Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Playfair Display", ui-serif, Georgia, serif;
+
+  --color-navy: #0F172A;
+  --color-navy-light: #1E293B;
+  --color-navy-dark: #020617;
+  
+  --color-gold: #F59E0B;
+  --color-gold-hover: #D97706;
+  --color-gold-light: #FEF3C7;
+  
+  --color-slate: #64748B;
+  --color-slate-light: #94A3B8;
+  --color-slate-dark: #475569;
+  
+  --color-danger: #EF4444;
+  --color-success: #10B981;
+
+  --radius-2xl: 1rem;
+  
+  --shadow-soft: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+@layer base {
+  body {
+    font-family: var(--font-sans);
+    @apply bg-gray-50 text-gray-900;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-serif);
+  }
+}
+
+@layer components {
+  .sidebar-nav-item {
+    @apply flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 text-slate-light hover:text-white hover:bg-navy-light;
+  }
+
+  .sidebar-nav-item.active {
+    @apply border-l-4 border-gold text-gold bg-navy-light;
+  }
+
+  .card {
+    @apply bg-white rounded-2xl shadow-soft p-6;
+  }
+
+  .btn-primary {
+    @apply bg-gold hover:bg-gold-hover text-navy font-bold py-2 px-6 rounded-lg transition-colors flex items-center justify-center gap-2;
+  }
+
+  .btn-secondary {
+    @apply bg-slate hover:bg-slate-dark text-white font-bold py-2 px-6 rounded-lg transition-colors flex items-center justify-center gap-2;
+  }
+
+  .btn-danger {
+    @apply bg-danger hover:bg-red-600 text-white font-bold py-2 px-6 rounded-lg transition-colors flex items-center justify-center gap-2;
+  }
+
+  .badge {
+    @apply px-3 py-1 rounded-full text-xs font-semibold;
+  }
+
+  .badge-success {
+    @apply bg-green-100 text-success;
+  }
+
+  .badge-danger {
+    @apply bg-red-100 text-danger;
+  }
+
+  .badge-warning {
+    @apply bg-yellow-100 text-gold;
+  }
+
+  .badge-info {
+    @apply bg-blue-100 text-blue-600;
+  }
+
+  .modal-overlay {
+    @apply fixed inset-0 bg-navy/60 backdrop-blur-sm z-50 flex items-center justify-center p-4;
+  }
+
+  .table-container {
+    @apply overflow-x-auto rounded-xl border border-gray-200;
+  }
+
+  table {
+    @apply w-full text-left border-collapse;
+  }
+
+  thead th {
+    @apply bg-gray-50 text-slate font-bold py-4 px-6 sticky top-0 z-10;
+  }
+
+  tbody tr {
+    @apply bg-white border-b border-gray-100 hover:bg-gray-50 transition-colors;
+  }
+
+  tbody tr:nth-child(even) {
+    @apply bg-gray-50/50;
+  }
+
+  td {
+    @apply py-4 px-6;
+  }
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+@keyframes slideIn {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.animate-slide-in {
+  animation: slideIn 0.3s ease-out forwards;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  50% { transform: translateX(5px); }
+  75% { transform: translateX(-5px); }
+}
+
+.animate-shake {
+  animation: shake 0.4s ease-in-out;
+}
