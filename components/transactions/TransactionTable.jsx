@@ -1,14 +1,25 @@
 "use client"
 
 import { useState } from 'react'
-import { Search, Download, Calendar as CalendarIcon, RotateCcw, AlertOctagon } from 'lucide-react'
+import { Search, Download, Calendar as CalendarIcon, RotateCcw, AlertOctagon, FileText } from 'lucide-react'
 import Badge from '@/components/ui/Badge'
 import LoadingSpinner from '@/components/ui/LoadingSpinner'
 import useSWR, { mutate } from 'swr'
 import { format } from 'date-fns'
 import { toast } from 'react-hot-toast'
+import { generateInvoice } from '@/lib/utils/generateInvoice'
 
 const fetcher = (url) => fetch(url).then((res) => res.json())
+
+import CustomDropdown from '@/components/ui/CustomDropdown'
+
+const STATUS_OPTIONS = [
+  { label: "All Status", value: "" },
+  { label: "Issued", value: "issued" },
+  { label: "Returned", value: "returned" },
+  { label: "Overdue", value: "overdue" },
+  { label: "Lost", value: "lost" }
+]
 
 export default function TransactionTable() {
   const [filterStatus, setFilterStatus] = useState('')
@@ -59,17 +70,13 @@ export default function TransactionTable() {
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-4 rounded-2xl shadow-soft">
         <h3 className="text-xl font-bold text-navy px-2">Transaction History</h3>
         <div className="flex items-center gap-3">
-          <select 
-            className="px-4 py-2 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-gold/20 outline-none cursor-pointer text-sm font-bold"
+          <CustomDropdown
+            options={STATUS_OPTIONS}
             value={filterStatus}
-            onChange={(e) => setFilterStatus(e.target.value)}
-          >
-            <option value="">All Status</option>
-            <option value="issued">Issued</option>
-            <option value="returned">Returned</option>
-            <option value="overdue">Overdue</option>
-            <option value="lost">Lost</option>
-          </select>
+            onChange={(val) => setFilterStatus(val)}
+            placeholder="Status"
+            className="w-40"
+          />
           <button className="flex items-center gap-2 px-4 py-2 bg-navy text-white text-sm font-bold rounded-xl hover:bg-navy-dark transition-all">
             <Download size={16} />
             <span>Export CSV</span>
@@ -127,28 +134,38 @@ export default function TransactionTable() {
                     )}
                   </td>
                   <td className="text-right">
-                    {tx.status === 'issued' || tx.status === 'overdue' ? (
-                      <div className="flex items-center justify-end gap-2">
-                        <button 
-                          disabled={actionLoading === tx._id}
-                          onClick={() => handleAction(tx._id, 'return')}
-                          className="px-3 py-1.5 bg-success/10 text-success text-xs font-bold rounded-lg hover:bg-success hover:text-white transition-all flex items-center gap-1"
-                        >
-                          <RotateCcw size={14} />
-                          <span>Return</span>
-                        </button>
-                        <button 
-                          disabled={actionLoading === tx._id}
-                          onClick={() => handleAction(tx._id, 'lost')}
-                          className="px-3 py-1.5 bg-danger/10 text-danger text-xs font-bold rounded-lg hover:bg-danger hover:text-white transition-all flex items-center gap-1"
-                        >
-                          <AlertOctagon size={14} />
-                          <span>Lost</span>
-                        </button>
-                      </div>
-                    ) : (
-                      <span className="text-slate-light text-[10px] font-bold uppercase italic">Closed</span>
-                    )}
+                    <div className="flex items-center justify-end gap-2">
+                      <button 
+                        onClick={() => generateInvoice(tx)}
+                        className="p-1.5 text-navy hover:bg-navy/10 rounded-lg transition-all"
+                        title="Download Invoice"
+                      >
+                        <FileText size={16} />
+                      </button>
+
+                      {tx.status === 'issued' || tx.status === 'overdue' ? (
+                        <>
+                          <button 
+                            disabled={actionLoading === tx._id}
+                            onClick={() => handleAction(tx._id, 'return')}
+                            className="px-3 py-1.5 bg-success/10 text-success text-xs font-bold rounded-lg hover:bg-success hover:text-white transition-all flex items-center gap-1"
+                          >
+                            <RotateCcw size={14} />
+                            <span>Return</span>
+                          </button>
+                          <button 
+                            disabled={actionLoading === tx._id}
+                            onClick={() => handleAction(tx._id, 'lost')}
+                            className="px-3 py-1.5 bg-danger/10 text-danger text-xs font-bold rounded-lg hover:bg-danger hover:text-white transition-all flex items-center gap-1"
+                          >
+                            <AlertOctagon size={14} />
+                            <span>Lost</span>
+                          </button>
+                        </>
+                      ) : (
+                        <span className="text-slate-light text-[10px] font-bold uppercase italic">Closed</span>
+                      )}
+                    </div>
                   </td>
                 </tr>
               ))

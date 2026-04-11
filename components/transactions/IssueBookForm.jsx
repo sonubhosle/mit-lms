@@ -1,23 +1,23 @@
-"use client"
-
-import { useState, useEffect } from 'react'
-import { Search, User, Book, Calendar, ChevronRight, Loader2, CheckCircle2 } from 'lucide-react'
+import { Search, User, Book, Calendar, ChevronRight, Loader2, CheckCircle2, Download } from 'lucide-react'
 import LoadingSpinner from '@/components/ui/LoadingSpinner'
 import { format, addDays } from 'date-fns'
+import clsx from 'clsx'
+import { generateInvoice } from '@/lib/utils/generateInvoice'
 
 export default function IssueBookForm({ onSuccess, initialBookId }) {
   const [step, setStep] = useState(1)
   const [memberSearch, setMemberSearch] = useState('')
   const [members, setMembers] = useState([])
   const [selectedMember, setSelectedMember] = useState(null)
-  
+
   const [bookSearch, setBookSearch] = useState('')
   const [books, setBooks] = useState([])
   const [selectedBook, setSelectedBook] = useState(null)
-  
+
   const [loading, setLoading] = useState(false)
   const [dueDate, setDueDate] = useState(format(addDays(new Date(), 14), 'yyyy-MM-dd'))
   const [error, setError] = useState('')
+  const [issuedTransaction, setIssuedTransaction] = useState(null)
 
   // Handle pre-selected book from inventory
   useEffect(() => {
@@ -68,6 +68,14 @@ export default function IssueBookForm({ onSuccess, initialBookId }) {
       })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error)
+      
+      // Construct a "full" transaction object for the invoice
+      setIssuedTransaction({
+        ...data,
+        bookId: selectedBook,
+        memberId: selectedMember
+      })
+      
       setStep(4)
       onSuccess()
     } catch (err) {
@@ -78,22 +86,45 @@ export default function IssueBookForm({ onSuccess, initialBookId }) {
   }
 
   return (
-    <div className="max-w-4xl mx-auto py-8">
+    <div className="py-8">
+      {/* ... Stepper logic stays same ... */}
       {/* Stepper */}
-      <div className="flex items-center justify-between mb-12 relative px-4">
-        {[1, 2, 3].map((s) => (
-          <div key={s} className="flex flex-col items-center relative z-10">
-            <div className={`w-12 h-12 rounded-full flex items-center justify-center font-bold transition-all ${step >= s ? 'bg-navy text-white' : 'bg-gray-100 text-slate'}`}>
-              {step > s ? <CheckCircle2 size={24} className="text-gold" /> : s}
-            </div>
-            <span className={`text-xs mt-2 font-bold uppercase tracking-wider ${step >= s ? 'text-navy' : 'text-slate'}`}>
-              {s === 1 ? 'Member' : s === 2 ? 'Book' : 'Confirm'}
-            </span>
-          </div>
-        ))}
-        <div className="absolute top-6 left-0 w-full h-1 bg-gray-100 z-0">
-          <div className="h-full bg-navy transition-all duration-300" style={{ width: `${((step - 1) / 2) * 100}%` }}></div>
+      <div className="flex items-center justify-between mb-12 relative max-w-2xl mx-auto">
+        {/* Background Line */}
+        <div className="absolute top-6 left-0 w-full h-0.5 bg-gray-100 z-0">
+          <div
+            className="h-full bg-navy transition-all duration-500 ease-out"
+            style={{ width: `${step === 4 ? 100 : ((step - 1) / 2) * 100}%` }}
+          ></div>
         </div>
+
+        {[1, 2, 3].map((s) => {
+          const isActive = step === s
+          const isCompleted = step > s
+
+          return (
+            <div key={s} className="flex flex-col items-center relative z-10">
+              <div className={clsx(
+                "w-12 h-12 rounded-full flex items-center justify-center font-bold transition-all duration-500",
+                isCompleted ? "bg-navy text-white shadow-lg" :
+                  isActive ? "bg-navy text-white shadow-xl shadow-navy/20 animate-ripple" :
+                    "bg-gray-100 text-slate"
+              )}>
+                {isCompleted ? (
+                  <CheckCircle2 size={24} className="text-gold transition-all animate-in zoom-in" />
+                ) : (
+                  <span className="relative z-10">{s}</span>
+                )}
+              </div>
+              <span className={clsx(
+                "text-[10px] mt-3 font-bold uppercase tracking-[0.2em] transition-colors duration-500",
+                step >= s ? "text-navy" : "text-slate-light"
+              )}>
+                {s === 1 ? 'Member' : s === 2 ? 'Book' : 'Confirm'}
+              </span>
+            </div>
+          )
+        })}
       </div>
 
       <div className="card p-10 shadow-soft animate-slide-in">
@@ -103,9 +134,9 @@ export default function IssueBookForm({ onSuccess, initialBookId }) {
             <p className="text-sm text-slate -mt-4">Search for the student who is borrowing the book</p>
             <div className="relative">
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate" size={20} />
-              <input 
+              <input
                 autoFocus
-                type="text" 
+                type="text"
                 placeholder="Search by name, ID, or mobile..."
                 className="w-full pl-12 pr-4 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-4 focus:ring-navy/5 focus:border-navy outline-none"
                 value={memberSearch}
@@ -114,7 +145,7 @@ export default function IssueBookForm({ onSuccess, initialBookId }) {
             </div>
             <div className="space-y-3">
               {members.map(m => (
-                <button 
+                <button
                   key={m._id}
                   onClick={() => { setSelectedMember(m); setStep(selectedBook ? 3 : 2); }}
                   className="w-full flex items-center gap-4 p-4 hover:bg-navy/5 border border-gray-100 rounded-2xl transition-all group"
@@ -141,9 +172,9 @@ export default function IssueBookForm({ onSuccess, initialBookId }) {
             </div>
             <div className="relative">
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate" size={20} />
-              <input 
+              <input
                 autoFocus
-                type="text" 
+                type="text"
                 placeholder="Search by title, author, or ISBN..."
                 className="w-full pl-12 pr-4 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-4 focus:ring-navy/5 focus:border-navy outline-none"
                 value={bookSearch}
@@ -152,7 +183,7 @@ export default function IssueBookForm({ onSuccess, initialBookId }) {
             </div>
             <div className="space-y-3">
               {books.map(b => (
-                <button 
+                <button
                   key={b._id}
                   disabled={b.availableCopies === 0}
                   onClick={() => { setSelectedBook(b); setStep(3); }}
@@ -208,7 +239,7 @@ export default function IssueBookForm({ onSuccess, initialBookId }) {
                 <Calendar size={14} className="text-gold" />
                 Expected Return Date
               </label>
-              <input 
+              <input
                 type="date"
                 className="w-full px-5 py-3 bg-white border border-gray-100 rounded-xl focus:ring-4 focus:ring-gold/10 focus:border-gold outline-none font-bold"
                 value={dueDate}
@@ -224,13 +255,13 @@ export default function IssueBookForm({ onSuccess, initialBookId }) {
             )}
 
             <div className="flex gap-4">
-              <button 
+              <button
                 onClick={() => setStep(selectedBook && initialBookId ? 1 : 2)}
                 className="flex-1 py-4 border-2 border-gray-100 rounded-2xl text-slate font-bold hover:bg-gray-50 transition-all"
               >
                 Change {initialBookId ? 'Member' : 'Book'}
               </button>
-              <button 
+              <button
                 onClick={handleIssue}
                 disabled={loading}
                 className="flex-2 bg-navy text-white py-4 rounded-2xl font-bold shadow-xl shadow-navy/20 hover:bg-navy-dark transition-all flex items-center justify-center gap-2"
@@ -251,12 +282,21 @@ export default function IssueBookForm({ onSuccess, initialBookId }) {
               Please remind **{selectedMember.name}** to return the book by **{format(new Date(dueDate), 'dd MMMM yyyy')}**.
             </p>
             <div className="flex flex-col items-center gap-4 pt-6">
-              <button 
-                onClick={() => { setStep(1); setMemberSearch(''); setBookSearch(''); setSelectedBook(null); }}
-                className="px-8 py-3 bg-navy text-white font-bold rounded-xl hover:bg-navy-dark transition-all"
-              >
-                Issue Another Book
-              </button>
+              <div className="flex gap-4 w-full max-w-md">
+                <button
+                  onClick={() => generateInvoice(issuedTransaction)}
+                  className="flex-1 py-4 bg-navy text-white font-bold rounded-2xl hover:bg-navy-dark transition-all flex items-center justify-center gap-2"
+                >
+                  <Download size={20} />
+                  Download Receipt
+                </button>
+                <button
+                  onClick={() => { setStep(1); setMemberSearch(''); setBookSearch(''); setSelectedBook(null); setIssuedTransaction(null); }}
+                  className="flex-1 py-4 border-2 border-gray-100 text-slate font-bold rounded-2xl hover:bg-gray-50 transition-all"
+                >
+                  Issue Another
+                </button>
+              </div>
               <button onClick={onSuccess} className="text-gold font-bold hover:underline">Return to Dashboard</button>
             </div>
           </div>

@@ -16,15 +16,22 @@ export async function GET(req) {
     const { searchParams } = new URL(req.url)
     const status = searchParams.get('status')
     const memberId = searchParams.get('memberId')
+    const search = searchParams.get('search')
 
     let query = {}
     if (status) query.status = status
     if (memberId) query.memberId = memberId
+    if (search) {
+      query.$or = [
+        { transactionId: { $regex: search, $options: 'i' } }
+      ]
+    }
 
     const transactions = await Transaction.find(query)
       .sort({ createdAt: -1 })
-      .populate('bookId', 'title isbn')
-      .populate('memberId', 'name memberId')
+      .populate('bookId', 'title isbn price')
+      .populate('memberId', 'name memberId email phone className address')
+      .populate('issuedBy', 'name')
 
     return NextResponse.json(transactions)
   } catch (error) {

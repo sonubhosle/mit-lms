@@ -1,9 +1,11 @@
 {
-  "/api/transactions/overdue/route": "app/api/transactions/overdue/route.js",
-  "/api/books/route": "app/api/books/route.js",
-  "/login/page": "app/login/page.js",
-  "/(dashboard)/transactions/overdue/page": "app/(dashboard)/transactions/overdue/page.js",
-  "/(dashboard)/books/page": "app/(dashboard)/books/page.js",
+  "/api/dashboard/route": "app/api/dashboard/route.js",
+  "/api/auth/me/route": "app/api/auth/me/route.js",
+  "/api/reports/route": "app/api/reports/route.js",
+  "/api/transactions/route": "app/api/transactions/route.js",
+  "/(dashboard)/reports/page": "app/(dashboard)/reports/page.js",
   "/(dashboard)/transactions/page": "app/(dashboard)/transactions/page.js",
-  "/(dashboard)/reports/page": "app/(dashboard)/reports/page.js"
+  "/(dashboard)/books/page": "app/(dashboard)/books/page.js",
+  "/(dashboard)/transactions/overdue/page": "app/(dashboard)/transactions/overdue/page.js",
+  "/(dashboard)/page": "app/(dashboard)/page.js"
 }

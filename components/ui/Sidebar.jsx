@@ -35,10 +35,10 @@ export default function Sidebar() {
     <aside className="fixed left-0 top-0 h-screen w-[260px] bg-navy text-white flex flex-col z-40">
       <div className="p-8">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-gold rounded-lg flex items-center justify-center">
-            <BookOpen className="text-navy" size={24} />
+          <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center overflow-hidden p-1">
+            <img src="/assets/logo.png" alt="MIT Logo" className="w-full h-full object-contain" />
           </div>
-          <h1 className="text-xl font-bold tracking-tight">LIBRARY MS</h1>
+          <h1 className="text-xl font-bold tracking-tight">MIT LIBRARY</h1>
         </div>
       </div>
 

@@ -1,4 +1,4 @@
-// File: D:\LMS\app\(dashboard)\members\page.jsx
+// File: C:\Users\Administrator\Desktop\Web\mit-lms\app\(dashboard)\members\page.jsx
 import * as entry from '../../../../../app/(dashboard)/members/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 

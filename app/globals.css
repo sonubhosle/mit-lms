@@ -9,20 +9,20 @@
   --color-navy: #0F172A;
   --color-navy-light: #1E293B;
   --color-navy-dark: #020617;
-  
+
   --color-gold: #F59E0B;
   --color-gold-hover: #D97706;
   --color-gold-light: #FEF3C7;
-  
+
   --color-slate: #64748B;
   --color-slate-light: #94A3B8;
   --color-slate-dark: #475569;
-  
+
   --color-danger: #EF4444;
   --color-success: #10B981;
 
   --radius-2xl: 1rem;
-  
+
   --shadow-soft: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
@@ -32,7 +32,12 @@
     @apply bg-gray-50 text-gray-900;
   }
 
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     font-family: var(--font-serif);
   }
 }
@@ -51,15 +56,30 @@
   }
 
   .btn-primary {
-    @apply bg-gold hover:bg-gold-hover text-navy font-bold py-2 px-6 rounded-lg transition-colors flex items-center justify-center gap-2;
+    @apply bg-gold hover:bg-gold-hover text-navy font-bold py-3 px-6 rounded-xl transition-all duration-300 flex items-center justify-center gap-2 shadow-lg shadow-gold/20 hover:shadow-gold/40 hover:-translate-y-0.5 active:translate-y-0 active:scale-95 disabled:opacity-50 disabled:pointer-events-none;
   }
 
   .btn-secondary {
-    @apply bg-slate hover:bg-slate-dark text-white font-bold py-2 px-6 rounded-lg transition-colors flex items-center justify-center gap-2;
+    @apply bg-white/10 hover:bg-white/20 text-white font-bold py-3 px-6 rounded-xl border border-white/10 transition-all duration-300 flex items-center justify-center gap-2;
   }
 
   .btn-danger {
-    @apply bg-danger hover:bg-red-600 text-white font-bold py-2 px-6 rounded-lg transition-colors flex items-center justify-center gap-2;
+    @apply bg-danger hover:bg-red-600 text-white font-bold py-3 px-6 rounded-xl transition-all duration-300 flex items-center justify-center gap-2;
+  }
+
+  .input-field {
+    @apply w-full bg-navy-dark/40 border border-white/10 rounded-xl py-3 pl-12 pr-4 text-white placeholder:text-slate-light focus:outline-none focus:ring-2 focus:ring-gold/40 focus:border-gold transition-all duration-300;
+  }
+
+  .glass-card {
+    @apply bg-white/10 backdrop-blur-xl border border-white/20 rounded-xl p-6 md:p-10 shadow-2xl;
+  }
+
+  .auth-bg {
+    background-image: url('/assets/auth-bg.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
   }
 
   .badge {
@@ -113,8 +133,13 @@
 
 /* Animations */
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 .animate-fade-in {
@@ -122,8 +147,15 @@
 }
 
 @keyframes slideIn {
-  from { transform: translateY(20px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 .animate-slide-in {
@@ -131,12 +163,41 @@
 }
 
 @keyframes shake {
-  0%, 100% { transform: translateX(0); }
-  25% { transform: translateX(-5px); }
-  50% { transform: translateX(5px); }
-  75% { transform: translateX(-5px); }
+
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  25% {
+    transform: translateX(-5px);
+  }
+
+  50% {
+    transform: translateX(5px);
+  }
+
+  75% {
+    transform: translateX(-5px);
+  }
 }
 
 .animate-shake {
   animation: shake 0.4s ease-in-out;
+}
+
+@keyframes ripple {
+  0% {
+    box-shadow: 0 0 0 0 rgba(15, 23, 42, 0.4), 0 0 0 0 rgba(15, 23, 42, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(15, 23, 42, 0), 0 0 0 20px rgba(15, 23, 42, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(15, 23, 42, 0), 0 0 0 0 rgba(15, 23, 42, 0);
+  }
+}
+
+.animate-ripple {
+  animation: ripple 2s infinite;
 }

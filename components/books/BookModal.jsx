@@ -3,6 +3,12 @@
 import { useState, useEffect } from 'react'
 import { X, Save, Book as BookIcon, Loader2 } from 'lucide-react'
 import { toast } from 'react-hot-toast'
+import CustomDropdown from '@/components/ui/CustomDropdown'
+
+const GENRES = [
+  "Fiction", "Non-Fiction", "Science", "History", "Technology",
+  "Mathematics", "Literature", "Philosophy", "Biography"
+]
 
 export default function BookModal({ isOpen, onClose, book, onSave }) {
   const [formData, setFormData] = useState({
@@ -102,22 +108,14 @@ export default function BookModal({ isOpen, onClose, book, onSave }) {
                 onChange={(e) => setFormData({ ...formData, isbn: e.target.value })}
               />
             </div>
-            <div className="space-y-2">
-              <label className="text-xs font-bold text-slate uppercase tracking-wider ml-1">Genre *</label>
-              <select 
-                required
-                className="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-gold/20 focus:border-gold outline-none transition-all cursor-pointer font-medium"
-                value={formData.genre}
-                onChange={(e) => setFormData({ ...formData, genre: e.target.value })}
-              >
-                <option value="">Select Genre</option>
-                <option value="Fiction">Fiction</option>
-                <option value="Non-Fiction">Non-Fiction</option>
-                <option value="Science">Science</option>
-                <option value="History">History</option>
-                <option value="Technology">Technology</option>
-              </select>
-            </div>
+            <CustomDropdown
+              label="Genre *"
+              options={GENRES}
+              value={formData.genre}
+              onChange={(val) => setFormData({ ...formData, genre: val })}
+              placeholder="Select Genre"
+              searchable
+            />
           </div>
 
           <div className="space-y-2">

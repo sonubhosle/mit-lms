@@ -1,4 +1,4 @@
-// File: D:\LMS\app\api\transactions\route.js
+// File: C:\Users\Administrator\Desktop\Web\mit-lms\app\api\transactions\route.js
 import * as entry from '../../../../../app/api/transactions/route.js'
 import type { NextRequest } from 'next/server.js'
 

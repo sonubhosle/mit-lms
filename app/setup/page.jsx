@@ -2,7 +2,9 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { BookOpen, Shield, User, Mail, Lock, Loader2 } from 'lucide-react'
+import { BookOpen, Shield, User, Mail, Lock, Loader2, Eye, EyeOff } from 'lucide-react'
+import { toast } from 'react-hot-toast'
+import clsx from 'clsx'
 
 export default function SetupPage() {
   const [formData, setFormData] = useState({
@@ -11,13 +13,14 @@ export default function SetupPage() {
     password: '',
   })
   const [loading, setLoading] = useState(false)
-  const [error, setError] = useState('')
+  const [error, setError] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
   const router = useRouter()
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     setLoading(true)
-    setError('')
+    setError(false)
     try {
       const res = await fetch('/api/users/setup', {
         method: 'POST',
@@ -25,86 +28,106 @@ export default function SetupPage() {
         body: JSON.stringify(formData)
       })
       if (res.ok) {
+        toast.success('System setup complete!')
         router.push('/login')
       } else {
         const data = await res.json()
-        setError(data.error || 'Setup failed')
+        toast.error(data.error || 'Setup failed')
+        setError(true)
       }
     } catch (err) {
-      setError('Setup failed')
+      toast.error('Setup failed')
+      setError(true)
     } finally {
       setLoading(false)
     }
   }
 
   return (
-    <div className="min-h-screen bg-navy flex items-center justify-center p-4">
-      <div className="max-w-md w-full bg-white rounded-[2.5rem] p-10 shadow-2xl animate-fade-in">
-        <div className="text-center mb-8">
-          <div className="w-16 h-16 bg-gold rounded-2xl flex items-center justify-center mx-auto mb-4">
-            <Shield className="text-navy" size={32} />
+    <div className="min-h-screen auth-bg flex items-center justify-center p-4 md:p-8 relative overflow-hidden">
+
+
+      <div className={clsx(
+        "max-w-md w-full glass-card relative z-10 animate-fade-in shadow-2xl transition-all duration-300",
+        error && "animate-shake"
+      )}>
+        <div className="text-center mb-10">
+          <div className="w-20 h-20 bg-white rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-2xl shadow-gold/40 transform -rotate-6 hover:rotate-0 transition-transform duration-500 overflow-hidden p-2">
+            <img src="/assets/logo.png" alt="MIT College Logo" className="w-full h-full object-contain" />
           </div>
-          <h1 className="text-3xl font-serif font-bold text-navy">First-Time Setup</h1>
-          <p className="text-slate text-sm">Create the primary superadmin account</p>
+          <h1 className="text-4xl font-serif font-bold text-white mb-2 tracking-tight">MIT Setup</h1>
+          <p className="text-slate-light font-medium uppercase tracking-widest text-[10px]">Initialize Superadmin Account</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="space-y-2">
-            <label className="text-xs font-bold text-slate uppercase ml-1">Admin Full Name</label>
+          <div className="space-y-2 group">
+            <label className="text-[10px] font-bold text-slate-light uppercase tracking-widest ml-1">Admin Full Name</label>
             <div className="relative">
-              <User className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-light" size={18} />
-              <input 
+              <User className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-light group-focus-within:text-gold transition-colors" size={18} />
+              <input
                 required
                 placeholder="Super Admin"
-                className="w-full pl-12 pr-4 py-3 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-gold/20 outline-none"
+                className="input-field"
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
               />
             </div>
           </div>
-          <div className="space-y-2">
-            <label className="text-xs font-bold text-slate uppercase ml-1">Admin Email</label>
+
+          <div className="space-y-2 group">
+            <label className="text-[10px] font-bold text-slate-light uppercase tracking-widest ml-1">Admin Email</label>
             <div className="relative">
-              <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-light" size={18} />
-              <input 
+              <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-light group-focus-within:text-gold transition-colors" size={18} />
+              <input
                 type="email"
                 required
                 placeholder="admin@library.com"
-                className="w-full pl-12 pr-4 py-3 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-gold/20 outline-none"
+                className="input-field"
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
               />
             </div>
           </div>
-          <div className="space-y-2">
-            <label className="text-xs font-bold text-slate uppercase ml-1">Admin Password</label>
+
+          <div className="space-y-2 group">
+            <label className="text-[10px] font-bold text-slate-light uppercase tracking-widest ml-1">Admin Password</label>
             <div className="relative">
-              <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-light" size={18} />
-              <input 
-                type="password"
+              <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-light group-focus-within:text-gold transition-colors" size={18} />
+              <input
+                type={showPassword ? "text" : "password"}
                 required
                 placeholder="••••••••"
-                className="w-full pl-12 pr-4 py-3 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-gold/20 outline-none"
+                className="input-field !pr-14"
                 value={formData.password}
                 onChange={(e) => setFormData({ ...formData, password: e.target.value })}
               />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-light hover:text-gold transition-colors p-2"
+              >
+                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+              </button>
             </div>
           </div>
 
-          {error && (
-            <div className="bg-danger/10 p-4 rounded-xl text-danger text-sm font-bold text-center">
-              {error}
-            </div>
-          )}
-
-          <button 
+          <button
             type="submit"
             disabled={loading}
-            className="w-full btn-primary py-4 font-bold shadow-lg shadow-gold/20 hover:scale-[1.02] active:scale-95 transition-all"
+            className="w-full btn-primary text-lg"
           >
-            {loading ? <Loader2 className="animate-spin" /> : "Complete Installation"}
+            {loading ? <Loader2 className="animate-spin" size={24} /> : (
+              <>
+                <span>Complete Installation</span>
+                <Shield size={20} />
+              </>
+            )}
           </button>
         </form>
+
+        <p className="mt-12 text-center text-slate-light/40 text-[10px] font-medium tracking-widest uppercase">
+          MIT Library Systems &bull; System Initialization
+        </p>
       </div>
     </div>
   )

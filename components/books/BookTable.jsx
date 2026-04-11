@@ -19,6 +19,21 @@ import { useRouter } from 'next/navigation'
 
 const fetcher = (url) => fetch(url).then((res) => res.json())
 
+import CustomDropdown from '@/components/ui/CustomDropdown'
+
+const GENRES = [
+  { label: "All Genres", value: "" },
+  { label: "Fiction", value: "Fiction" },
+  { label: "Non-Fiction", value: "Non-Fiction" },
+  { label: "Science", value: "Science" },
+  { label: "History", value: "History" },
+  { label: "Technology", value: "Technology" },
+  { label: "Mathematics", value: "Mathematics" },
+  { label: "Literature", value: "Literature" },
+  { label: "Philosophy", value: "Philosophy" },
+  { label: "Biography", value: "Biography" }
+]
+
 export default function BookTable({ onEdit, onDelete }) {
   const [search, setSearch] = useState('')
   const [genre, setGenre] = useState('')
@@ -61,21 +76,13 @@ export default function BookTable({ onEdit, onDelete }) {
           />
         </div>
         <div className="flex items-center gap-3">
-          <div className="relative">
-            <Filter className="absolute left-3 top-1/2 -translate-y-1/2 text-slate" size={16} />
-            <select 
-              className="pl-9 pr-8 py-2 bg-gray-50 border border-gray-100 rounded-xl appearance-none focus:ring-2 focus:ring-gold/20 outline-none cursor-pointer"
-              value={genre}
-              onChange={(e) => { setGenre(e.target.value); setPage(1); }}
-            >
-              <option value="">All Genres</option>
-              <option value="Fiction">Fiction</option>
-              <option value="Non-Fiction">Non-Fiction</option>
-              <option value="Science">Science</option>
-              <option value="History">History</option>
-              <option value="Technology">Technology</option>
-            </select>
-          </div>
+          <CustomDropdown
+            options={GENRES}
+            value={genre}
+            onChange={(val) => { setGenre(val); setPage(1); }}
+            placeholder="Filter by Genre"
+            className="w-48"
+          />
         </div>
       </div>
 
