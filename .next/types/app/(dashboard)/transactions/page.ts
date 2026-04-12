@@ -1,4 +1,4 @@
-// File: C:\Users\Administrator\Desktop\Web\mit-lms\app\(dashboard)\transactions\page.jsx
+// File: D:\LMS\mit-lms\app\(dashboard)\transactions\page.jsx
 import * as entry from '../../../../../app/(dashboard)/transactions/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 

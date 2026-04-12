@@ -7,6 +7,7 @@ import Member from '@/lib/models/Member'
 import AuditLog from '@/lib/models/AuditLog'
 import { addDays } from 'date-fns'
 
+
 export async function GET(req) {
   try {
     const session = await getSession()
@@ -38,6 +39,7 @@ export async function GET(req) {
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
   }
 }
+
 
 export async function POST(req) {
   try {

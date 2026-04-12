@@ -13,8 +13,8 @@ import {
 
 export default function ActivityChart({ data }) {
   return (
-    <div className="card h-[400px]">
-      <h3 className="text-xl font-bold mb-6 text-navy">Library Activity (Last 7 Days)</h3>
+    <div className="bg-white p-8 rounded-4xl shadow-sm shadow-slate-100 border border-slate-200 hover:border-indigo-200 hover:shadow-md hover:shadow-indigo-100/50 hover:-translate-y-1 transition-all duration-300 h-[450px]">
+      <h3 className="text-xl font-bold mb-6 text-slate-900">Library Activity (Last 7 Days)</h3>
       <div className="h-[320px] w-full">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={data}>

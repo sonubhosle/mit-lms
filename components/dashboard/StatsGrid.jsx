@@ -10,7 +10,7 @@ export default function StatsGrid({ stats }) {
         icon={Book} 
         trend="up" 
         trendValue={12} 
-        color="bg-blue-500" 
+        color="from-blue-500 to-indigo-600 shadow-blue-500/40" 
       />
       <StatCard 
         title="Total Members" 
@@ -18,7 +18,7 @@ export default function StatsGrid({ stats }) {
         icon={Users} 
         trend="up" 
         trendValue={5} 
-        color="bg-purple-500" 
+        color="from-purple-500 to-fuchsia-600 shadow-purple-500/40" 
       />
       <StatCard 
         title="Issued Today" 
@@ -26,7 +26,7 @@ export default function StatsGrid({ stats }) {
         icon={ClipboardCheck} 
         trend="down" 
         trendValue={2} 
-        color="bg-gold" 
+        color="from-amber-400 to-orange-500 shadow-amber-500/40" 
       />
       <StatCard 
         title="Overdue Books" 
@@ -34,7 +34,7 @@ export default function StatsGrid({ stats }) {
         icon={AlertCircle} 
         trend="up" 
         trendValue={8} 
-        color="bg-danger" 
+        color="from-rose-500 to-red-600 shadow-rose-500/40" 
       />
     </div>
   )

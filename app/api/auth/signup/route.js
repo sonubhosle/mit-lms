@@ -27,10 +27,30 @@ export async function POST(req) {
       failedAttempts: 0
     })
 
-    return new NextResponse(JSON.stringify({ 
+    // 4. Generate Token for Auto-login
+    const { signJWT } = await import("@/lib/jwt")
+    const token = await signJWT({
+      id: user._id.toString(),
+      name: user.name,
+      email: user.email,
+      role: user.role,
+    })
+
+    const response = new NextResponse(JSON.stringify({ 
       success: true, 
-      message: "Account created successfully" 
+      message: "Account created successfully",
+      user: { name: user.name, role: user.role } 
     }), { status: 201, headers: { 'Content-Type': 'application/json' } })
+
+    response.cookies.set("auth_token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      maxAge: 60 * 60 * 24 * 7, // 7 days
+      path: "/",
+    })
+
+    return response
 
   } catch (error) {
     console.error("Signup Error:", error)

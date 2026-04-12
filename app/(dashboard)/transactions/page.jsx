@@ -9,25 +9,22 @@ import { mutate } from 'swr'
 import clsx from 'clsx'
 import { useSearchParams } from 'next/navigation'
 
+import IssueModal from '@/components/transactions/IssueModal'
+
 export default function TransactionsPage() {
   const searchParams = useSearchParams()
   const initialAction = searchParams.get('action') || 'history'
-  const initialBookId = searchParams.get('bookId')
   
-  const [activeTab, setActiveTab] = useState(initialAction)
-
-  useEffect(() => {
-    if (initialAction) setActiveTab(initialAction)
-  }, [initialAction])
+  const [activeTab, setActiveTab] = useState(initialAction === 'issue' ? 'history' : initialAction)
+  const [isIssueModalOpen, setIsIssueModalOpen] = useState(initialAction === 'issue')
 
   const handleSuccess = () => {
     mutate((key) => typeof key === 'string' && key.startsWith('/api/transactions'))
   }
 
   const tabs = [
-    { id: 'issue', label: 'Issue Book', icon: PlusCircle },
-    { id: 'return', label: 'Return (via Search)', icon: RotateCw },
-    { id: 'history', label: 'Current Issues & History', icon: History },
+    { id: 'history', label: 'History & Returns', icon: History },
+    { id: 'return', label: 'Search & Collect', icon: RotateCw },
     { id: 'lost_collections', label: 'Lost Books', icon: AlertTriangle },
   ]
 
@@ -35,12 +32,19 @@ export default function TransactionsPage() {
     <div className="space-y-8 animate-fade-in">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-serif font-bold text-navy">Library Transactions</h1>
-          <p className="text-slate font-medium">Manage book circulation, returns, and inventory status</p>
+          <h1 className="text-3xl font-serif font-bold text-slate-900">Library Transactions</h1>
+          <p className="text-slate-500 font-medium">Manage book circulation, returns, and inventory status</p>
         </div>
+        <button 
+          onClick={() => setIsIssueModalOpen(true)}
+          className="btn-primary px-8 py-4 shadow-xl shadow-amber-500/30 hover:shadow-amber-500/50"
+        >
+          <PlusCircle size={24} strokeWidth={2.5} />
+          <span className="text-lg">Issue New Book</span>
+        </button>
       </div>
 
-      <div className="flex items-center gap-1 p-1 bg-gray-100 rounded-2xl w-fit overflow-x-auto max-w-full">
+      <div className="flex items-center gap-1 p-1 bg-slate-100 rounded-2xl w-fit overflow-x-auto max-w-full">
         {tabs.map((tab) => (
           <button
             key={tab.id}
@@ -48,8 +52,8 @@ export default function TransactionsPage() {
             className={clsx(
               "flex items-center gap-2 px-6 py-3 rounded-xl font-bold transition-all whitespace-nowrap",
               activeTab === tab.id 
-                ? "bg-navy text-white shadow-soft" 
-                : "text-slate hover:text-navy"
+                ? "bg-slate-900 text-slate-900 shadow-soft" 
+                : "text-slate-500 hover:-slate-900"
             )}
           >
             <tab.icon size={18} />
@@ -59,11 +63,16 @@ export default function TransactionsPage() {
       </div>
 
       <div className="min-h-[500px]">
-        {activeTab === 'issue' && <IssueBookForm onSuccess={handleSuccess} initialBookId={initialBookId} />}
         {activeTab === 'return' && <ReturnBookForm onSuccess={handleSuccess} />}
         {activeTab === 'history' && <TransactionTable />}
         {activeTab === 'lost_collections' && <TransactionTable filter="lost" />}
       </div>
+
+      <IssueModal 
+        isOpen={isIssueModalOpen}
+        onClose={() => setIsIssueModalOpen(false)}
+        onSuccess={handleSuccess}
+      />
     </div>
   )
 }

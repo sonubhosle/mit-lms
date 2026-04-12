@@ -3,7 +3,6 @@ import { getSession } from '@/lib/jwt'
 import dbConnect from '@/lib/mongodb'
 import Member from '@/lib/models/Member'
 import AuditLog from '@/lib/models/AuditLog'
-import { encrypt, decrypt } from '@/lib/encryption'
 
 export async function GET(req, { params }) {
   try {
@@ -11,13 +10,8 @@ export async function GET(req, { params }) {
     if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
     await dbConnect()
-    const memberDoc = await Member.findById(params.id)
-    if (!memberDoc) return NextResponse.json({ error: 'Member not found' }, { status: 404 })
-
-    const member = memberDoc.toObject()
-    member.email = decrypt(member.email)
-    member.phone = decrypt(member.phone)
-    member.address = decrypt(member.address)
+    const member = await Member.findById(params.id)
+    if (!member) return NextResponse.json({ error: 'Member not found' }, { status: 404 })
 
     return NextResponse.json(member)
   } catch (error) {
@@ -33,15 +27,7 @@ export async function PUT(req, { params }) {
     await dbConnect()
     const data = await req.json()
 
-    // Encrypt sensitive info for update
-    const encryptedData = {
-      ...data,
-      email: encrypt(data.email),
-      phone: encrypt(data.phone),
-      address: data.address ? encrypt(data.address) : ''
-    }
-
-    const member = await Member.findByIdAndUpdate(params.id, encryptedData, { new: true })
+    const member = await Member.findByIdAndUpdate(params.id, data, { new: true })
 
     await AuditLog.create({
       userId: session.id,

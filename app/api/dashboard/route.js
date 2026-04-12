@@ -26,6 +26,7 @@ export async function GET() {
       issuedToday,
       overdueCount,
       recentTransactions,
+      recentBooks,
       activityData
     ] = await Promise.all([
       Book.countDocuments({ isActive: true }),
@@ -43,6 +44,10 @@ export async function GET() {
         .limit(5)
         .populate('bookId', 'title')
         .populate('memberId', 'name'),
+      Book.find({ isActive: true })
+        .sort({ createdAt: -1 })
+        .limit(5)
+        .select('title author genre isbn availableCopies'),
       // Fetch activity for last 7 days
       Promise.all(
         Array.from({ length: 7 }).map(async (_, i) => {
@@ -70,6 +75,7 @@ export async function GET() {
       issuedToday,
       overdueCount,
       recentTransactions,
+      recentBooks,
       chartData: activityData.reverse()
     })
   } catch (error) {

@@ -44,7 +44,7 @@ export default function CustomDropdown({
   return (
     <div className={clsx("space-y-2 relative", className)} ref={dropdownRef}>
       {label && (
-        <label className="text-xs font-bold text-slate uppercase tracking-wider ml-1">
+        <label className="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1">
           {label}
         </label>
       )}
@@ -53,8 +53,8 @@ export default function CustomDropdown({
         type="button"
         onClick={() => setIsOpen(!isOpen)}
         className={clsx(
-          "w-full px-4 py-3 bg-gray-50 border rounded-xl flex items-center justify-between transition-all duration-300 font-medium",
-          isOpen ? "border-gold ring-2 ring-gold/10" : "border-gray-100"
+          "w-full px-4 py-3 bg-slate-50 border border-slate-100 border rounded-xl flex items-center justify-between transition-all duration-300 font-medium",
+          isOpen ? "text-amber-500 ring-2 text-amber-500/10" : "border-slate-100"
         )}
       >
         <span className={clsx("truncate", !value && "text-gray-400")}>
@@ -62,22 +62,22 @@ export default function CustomDropdown({
         </span>
         <ChevronDown 
           size={18} 
-          className={clsx("text-slate transition-transform duration-300", isOpen && "rotate-180 text-gold")} 
+          className={clsx("text-slate-500 transition-transform duration-300", isOpen && "rotate-180 text-amber-500")} 
         />
       </button>
 
       {/* Dropdown Menu */}
       <div className={clsx(
-        "absolute left-0 right-0 mt-2 bg-white border border-gray-100 rounded-xl shadow-2xl z-50 overflow-hidden transition-all duration-300 origin-top",
+        "absolute left-0 right-0 mt-2 bg-white shadow-xl shadow-slate-200/50 border border-slate-100 rounded-xl shadow-2xl z-50 overflow-hidden transition-all duration-300 origin-top",
         isOpen ? "opacity-100 scale-y-100 translate-y-0" : "opacity-0 scale-y-95 -translate-y-2 pointer-events-none"
       )}>
         {searchable && (
-          <div className="p-2 border-b border-gray-100">
+          <div className="p-2 border-b border-slate-100">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={14} />
               <input
                 type="text"
-                className="w-full pl-9 pr-3 py-2 bg-gray-50 border border-gray-100 rounded-lg text-sm focus:outline-none focus:border-gold transition-colors"
+                className="w-full pl-9 pr-3 py-2 bg-slate-50 border border-slate-100 border border-slate-100 rounded-lg text-sm focus:outline-none focus:-amber-500 transition-colors"
                 placeholder="Search..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
@@ -105,16 +105,16 @@ export default function CustomDropdown({
                   }}
                   className={clsx(
                     "w-full px-4 py-2.5 text-left text-sm rounded-lg transition-all flex items-center justify-between group",
-                    isSelected ? "bg-gold/10 text-gold font-bold" : "text-slate hover:bg-gray-50 hover:text-navy"
+                    isSelected ? "text-amber-500/10 text-amber-500 font-bold" : "text-slate-500 hover:bg-slate-50 border border-slate-100 hover:-slate-900"
                   )}
                 >
                   <span className="truncate">{label}</span>
-                  {isSelected && <Check size={14} className="text-gold" />}
+                  {isSelected && <Check size={14} className="text-amber-500" />}
                 </button>
               )
             })
           ) : (
-            <div className="px-4 py-3 text-sm text-slate-light text-center">
+            <div className="px-4 py-3 text-sm text-slate-500 text-center">
               No results found
             </div>
           )}

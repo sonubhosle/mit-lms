@@ -64,13 +64,13 @@ export default function BookTable({ onEdit, onDelete }) {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-4 rounded-2xl shadow-soft">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white shadow-xl shadow-slate-200/50 p-4 rounded-2xl shadow-soft">
         <div className="flex-1 relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate" size={18} />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" size={18} />
           <input 
             type="text" 
             placeholder="Search by title, author, or ISBN..."
-            className="w-full pl-10 pr-4 py-2 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-gold/20 focus:border-gold outline-none transition-all"
+            className="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-100 border border-slate-100 rounded-xl focus:ring-2 focus:-amber-500/20 focus:-amber-500 outline-none transition-all"
             value={search}
             onChange={(e) => { setSearch(e.target.value); setPage(1); }}
           />
@@ -86,8 +86,8 @@ export default function BookTable({ onEdit, onDelete }) {
         </div>
       </div>
 
-      <div className="table-container bg-white shadow-soft">
-        <table className="animate-fade-in">
+      <div className="overflow-x-auto rounded-xl border border-slate-200 bg-white shadow-xl shadow-slate-200/50 shadow-sm">
+        <table className="animate-fade-in w-full text-left border-collapse [&_th]:bg-slate-50 border border-slate-100 [&_th]:text-slate-500 [&_th]:font-bold [&_th]:py-4 [&_th]:px-6 [&_th]:sticky [&_th]:top-0 [&_th]:z-10 [&_tbody_tr]:bg-white shadow-xl shadow-slate-200/50 [&_tbody_tr]:border-b [&_tbody_tr]:border-slate-100 [&_tbody_tr:hover]:bg-slate-50 border border-slate-100 [&_tbody_tr]:transition-colors [&_tbody_tr:nth-child(even)]:bg-slate-50 border border-slate-100/50 [&_td]:py-4 [&_td]:px-6">
           <thead>
             <tr>
               <th>ISBN</th>
@@ -109,35 +109,35 @@ export default function BookTable({ onEdit, onDelete }) {
                 const status = getStatus(book)
                 return (
                   <tr key={book._id}>
-                    <td className="font-mono text-sm text-slate-dark">{book.isbn}</td>
+                    <td className="font-mono text-sm text-slate-700">{book.isbn}</td>
                     <td>
                       <div className="flex flex-col">
-                        <span className="font-bold text-navy text-base">{book.title}</span>
-                        <span className="text-xs text-slate font-medium">{book.author}</span>
+                        <span className="font-bold text-slate-900 text-base">{book.title}</span>
+                        <span className="text-xs text-slate-500 font-medium">{book.author}</span>
                       </div>
                     </td>
                     <td>
-                      <span className="px-2 py-1 bg-gray-100 rounded text-xs font-bold text-slate-dark tracking-wide">
+                      <span className="px-2 py-1 bg-slate-100 rounded text-xs font-bold text-slate-700 tracking-wide">
                         {book.genre}
                       </span>
                     </td>
-                    <td className="font-bold text-navy">
+                    <td className="font-bold text-slate-900">
                       ₹{book.price || 0}
                     </td>
                     <td className="text-center font-bold">
-                      <span className="text-navy">{book.availableCopies}</span>
-                      <span className="text-slate/40 text-xs mx-1">/</span>
-                      <span className="text-slate text-xs font-normal">{book.totalCopies}</span>
+                      <span className="text-slate-900">{book.availableCopies}</span>
+                      <span className="text-slate-500/40 text-xs mx-1">/</span>
+                      <span className="text-slate-500 text-xs font-normal">{book.totalCopies}</span>
                     </td>
                     <td>
                       <Badge variant={status.variant}>{status.label}</Badge>
                     </td>
                     <td className="text-right">
-                      <div className="flex items-center justify-end gap-2 text-navy">
+                      <div className="flex items-center justify-end gap-2 text-slate-900">
                         {book.availableCopies > 0 && (
                           <button 
                             onClick={() => handleIssueDirect(book._id)}
-                            className="p-2 text-success hover:bg-success/10 rounded-lg transition-all flex items-center gap-1 font-bold text-xs"
+                            className="p-2 text-emerald-500 hover:-emerald-500/10 rounded-lg transition-all flex items-center gap-1 font-bold text-xs"
                             title="Issue this book"
                           >
                             <HandHelping size={18} />
@@ -146,13 +146,13 @@ export default function BookTable({ onEdit, onDelete }) {
                         )}
                         <button 
                           onClick={() => onEdit(book)}
-                          className="p-2 text-slate hover:text-gold hover:bg-gold/10 rounded-lg transition-all"
+                          className="p-2 text-slate-500 hover:-amber-500 hover:-amber-500/10 rounded-lg transition-all"
                         >
                           <Edit2 size={16} />
                         </button>
                         <button 
                           onClick={() => onDelete(book)}
-                          className="p-2 text-slate hover:text-danger hover:bg-danger/10 rounded-lg transition-all"
+                          className="p-2 text-slate-500 hover:-red-500 hover:-red-500/10 rounded-lg transition-all"
                         >
                           <Trash2 size={16} />
                         </button>
@@ -163,7 +163,7 @@ export default function BookTable({ onEdit, onDelete }) {
               })
             ) : (
               <tr>
-                <td colSpan="7" className="text-center py-20 text-slate">
+                <td colSpan="7" className="text-center py-20 text-slate-500">
                   No books found.
                 </td>
               </tr>
@@ -173,22 +173,22 @@ export default function BookTable({ onEdit, onDelete }) {
       </div>
 
       {data?.pagination && data.pagination.pages > 1 && (
-        <div className="flex items-center justify-between bg-white px-6 py-4 rounded-2xl shadow-soft">
-          <p className="text-sm text-slate">
+        <div className="flex items-center justify-between bg-white shadow-xl shadow-slate-200/50 px-6 py-4 rounded-2xl shadow-soft">
+          <p className="text-sm text-slate-500">
             Page <span className="font-bold">{page}</span> of <span className="font-bold">{data.pagination.pages}</span>
           </p>
           <div className="flex items-center gap-2">
             <button 
               disabled={page === 1}
               onClick={() => setPage(p => p - 1)}
-              className="p-2 rounded-lg border border-gray-100 hover:bg-gray-50 disabled:opacity-50 transition-all"
+              className="p-2 rounded-lg border border-slate-100 hover:bg-slate-50 border border-slate-100 disabled:opacity-50 transition-all"
             >
               <ChevronLeft size={20} />
             </button>
             <button 
               disabled={page === data.pagination.pages}
               onClick={() => setPage(p => p + 1)}
-              className="p-2 rounded-lg border border-gray-100 hover:bg-gray-50 disabled:opacity-50 transition-all"
+              className="p-2 rounded-lg border border-slate-100 hover:bg-slate-50 border border-slate-100 disabled:opacity-50 transition-all"
             >
               <ChevronRight size={20} />
             </button>

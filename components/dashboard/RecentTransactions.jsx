@@ -12,13 +12,13 @@ export default function RecentTransactions({ transactions }) {
   }
 
   return (
-    <div className="card">
+    <div className="bg-white p-8 rounded-4xl shadow-sm shadow-slate-100 border border-slate-200 hover:border-indigo-200 hover:shadow-md hover:shadow-indigo-100/50 hover:-translate-y-1 transition-all duration-300 mb-8 h-full flex flex-col">
       <div className="flex items-center justify-between mb-6">
-        <h3 className="text-xl font-bold text-navy">Recent Transactions</h3>
-        <button className="text-gold font-bold text-sm hover:underline">View All</button>
+        <h3 className="text-xl font-bold text-slate-900">Recent Transactions</h3>
+        <button className="text-amber-500 font-bold text-sm hover:underline">View All</button>
       </div>
-      <div className="table-container">
-        <table>
+      <div className="overflow-x-auto rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden">
+        <table className="w-full text-left border-collapse [&_th]:bg-slate-50 [&_th]:border-b [&_th]:border-slate-200 [&_th]:text-slate-600 [&_th]:font-bold [&_th]:py-4 [&_th]:px-6 [&_tbody_tr]:bg-white [&_tbody_tr]:border-b [&_tbody_tr]:border-slate-100 [&_tbody_tr:hover]:bg-slate-50 [&_tbody_tr]:transition-colors [&_td]:py-4 [&_td]:px-6">
           <thead>
             <tr>
               <th>Member</th>
@@ -30,9 +30,9 @@ export default function RecentTransactions({ transactions }) {
           <tbody>
             {(transactions || []).map((tx) => (
               <tr key={tx._id}>
-                <td className="font-medium text-navy">{tx.memberId?.name}</td>
-                <td className="text-slate">{tx.bookId?.title}</td>
-                <td className="text-slate text-sm">
+                <td className="font-medium text-slate-900">{tx.memberId?.name}</td>
+                <td className="text-slate-500">{tx.bookId?.title}</td>
+                <td className="text-slate-500 text-sm">
                   {format(new Date(tx.issueDate), 'dd MMM yyyy')}
                 </td>
                 <td>
@@ -44,7 +44,7 @@ export default function RecentTransactions({ transactions }) {
             ))}
             {(!transactions || transactions.length === 0) && (
               <tr>
-                <td colSpan="4" className="text-center py-8 text-slate">
+                <td colSpan="4" className="text-center py-8 text-slate-500">
                   No recent transactions found.
                 </td>
               </tr>

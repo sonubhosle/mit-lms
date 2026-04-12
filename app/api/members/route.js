@@ -3,7 +3,6 @@ import { getSession } from '@/lib/jwt'
 import dbConnect from '@/lib/mongodb'
 import Member from '@/lib/models/Member'
 import AuditLog from '@/lib/models/AuditLog'
-import { encrypt, decrypt } from '@/lib/encryption'
 
 export async function GET(req) {
   try {
@@ -30,16 +29,25 @@ export async function GET(req) {
       Member.countDocuments(query)
     ])
 
-    // Decrypt sensitive data before sending to client
-    const decryptedMembers = members.map(m => {
+    const Transaction = (await import('@/lib/models/Transaction')).default
+
+    // Get active issue counts for all members in this page at once
+    const memberIds = members.map(m => m._id)
+    const issueCounts = await Transaction.aggregate([
+      { $match: { memberId: { $in: memberIds }, status: 'issued' } },
+      { $group: { _id: '$memberId', count: { $sum: 1 } } }
+    ])
+
+    const countsMap = Object.fromEntries(issueCounts.map(c => [c._id.toString(), c.count]))
+
+    const membersWithCounts = members.map(m => {
       const member = m.toObject()
-      member.email = decrypt(member.email)
-      member.phone = decrypt(member.phone)
+      member.activeIssues = countsMap[member._id.toString()] || 0
       return member
     })
 
     return NextResponse.json({
-      members: decryptedMembers,
+      members: membersWithCounts,
       pagination: { total, page, pages: Math.ceil(total / limit) }
     })
   } catch (error) {
@@ -63,16 +71,7 @@ export async function POST(req) {
     const sequence = String(count + 1).padStart(4, '0')
     const memberId = `LIB-${year}-${sequence}`
 
-    // Encrypt sensitive info
-    const encryptedData = {
-      ...data,
-      memberId,
-      email: encrypt(data.email),
-      phone: encrypt(data.phone),
-      address: data.address ? encrypt(data.address) : ''
-    }
-
-    const member = await Member.create(encryptedData)
+    const member = await Member.create({ ...data, memberId })
 
     await AuditLog.create({
       userId: session.id,
@@ -83,6 +82,9 @@ export async function POST(req) {
     return NextResponse.json(member, { status: 201 })
   } catch (error) {
     console.error('Member POST error:', error)
+    if (error.code === 11000 && error.keyPattern?.email) {
+      return NextResponse.json({ error: 'A member with this email already exists' }, { status: 400 })
+    }
     return NextResponse.json({ error: 'Failed to create member' }, { status: 500 })
   }
 }

@@ -43,29 +43,31 @@ export default function BooksPage() {
   }
 
   return (
-    <div className="space-y-8 animate-fade-in">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-3xl font-serif font-bold text-navy">Books Management</h1>
-          <p className="text-slate font-medium">Manage your library's inventory, stock, and categories</p>
+    <div className="space-y-8">
+      <div className="animate-fade-in space-y-8">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <h1 className="text-3xl font-serif font-bold text-slate-900">Books Management</h1>
+            <p className="text-slate-500 font-medium">Manage your library's inventory, stock, and categories</p>
+          </div>
+          <div className="flex items-center gap-3">
+            <button className="btn-secondary px-5 py-3">
+              <FileUp size={20} />
+              <span>Import CSV</span>
+            </button>
+            <button className="btn-secondary px-5 py-3">
+              <FileDown size={20} />
+              <span>Export Excel</span>
+            </button>
+            <button onClick={handleAdd} className="btn-primary px-6 py-3 shadow-lg shadow-amber-500/20">
+              <Plus size={20} />
+              <span>Add New Book</span>
+            </button>
+          </div>
         </div>
-        <div className="flex items-center gap-3">
-          <button className="btn-secondary px-5 py-3">
-            <FileUp size={20} />
-            <span>Import CSV</span>
-          </button>
-          <button className="btn-secondary px-5 py-3">
-            <FileDown size={20} />
-            <span>Export Excel</span>
-          </button>
-          <button onClick={handleAdd} className="btn-primary px-6 py-3 shadow-lg shadow-gold/20">
-            <Plus size={20} />
-            <span>Add New Book</span>
-          </button>
-        </div>
-      </div>
 
-      <BookTable onEdit={handleEdit} onDelete={handleDelete} />
+        <BookTable onEdit={handleEdit} onDelete={handleDelete} />
+      </div>
 
       <BookModal 
         isOpen={isModalOpen} 
