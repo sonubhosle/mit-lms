@@ -57,7 +57,7 @@ export default function MembersPage() {
             <h1 className="text-3xl font-serif font-bold text-slate-900">Member Directory</h1>
             <p className="text-slate-500 font-medium">Manage library memberships, subscriptions, and profiles</p>
           </div>
-          <button onClick={handleAdd} className="btn-primary px-6 py-3 shadow-lg shadow-amber-500/20">
+          <button onClick={handleAdd} className="cursor-pointer flex items-center gap-2 bg-linear-to-r from-violet-500 to-violet-700 text-white rounded-2xl px-5 py-3 hover:from-violet-700 hover:to-violet-500 transition ease-in duration-300 hover:shadow-2xl">
             <UserPlus size={20} />
             <span>Add New Member</span>
           </button>
@@ -66,9 +66,9 @@ export default function MembersPage() {
         <MemberTable onEdit={handleEdit} onDelete={handleDelete} onView={handleView} />
       </div>
 
-      <MemberModal 
-        isOpen={isModalOpen} 
-        onClose={() => setIsModalOpen(false)} 
+      <MemberModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
         member={selectedMember}
         onSave={handleSave}
       />

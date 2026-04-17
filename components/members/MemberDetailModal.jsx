@@ -10,6 +10,9 @@ import { mutate } from 'swr'
 export default function MemberDetailModal({ isOpen, onClose, member }) {
   const [isVisible, setIsVisible] = useState(false);
   const [isRendered, setIsRendered] = useState(isOpen);
+  const [transactions, setTransactions] = useState([])
+  const [loading, setLoading] = useState(false)
+  const [deleting, setDeleting] = useState(null)
 
   useEffect(() => {
     if (isOpen) {
@@ -23,12 +26,6 @@ export default function MemberDetailModal({ isOpen, onClose, member }) {
     }
   }, [isOpen]);
 
-  if (!isRendered) return null;
-
-  const [transactions, setTransactions] = useState([])
-  const [loading, setLoading] = useState(false)
-  const [deleting, setDeleting] = useState(null)
-
   useEffect(() => {
     if (!isOpen || !member) return
     setLoading(true)
@@ -39,7 +36,7 @@ export default function MemberDetailModal({ isOpen, onClose, member }) {
       .finally(() => setLoading(false))
   }, [isOpen, member])
 
-  if (!isOpen || !member) return null
+  if (!isRendered || !member) return null;
 
   const activeIssues = transactions.filter(t => t.status === 'issued' || t.status === 'overdue')
   const history = transactions.filter(t => t.status !== 'issued' && t.status !== 'overdue')

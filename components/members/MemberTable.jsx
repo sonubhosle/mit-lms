@@ -1,10 +1,10 @@
 "use client"
 
 import { useState, useEffect } from 'react'
-import { 
-  Search, 
-  Edit2, 
-  Trash2, 
+import {
+  Search,
+  Edit2,
+  Trash2,
   ChevronLeft,
   ChevronRight,
   Eye,
@@ -42,24 +42,23 @@ export default function MemberTable({ onEdit, onDelete }) {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white shadow-xl shadow-slate-200/50 p-4 rounded-2xl shadow-soft">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white  p-4 rounded-2xl shadow-soft">
         <div className="flex-1 relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" size={18} />
-          <input 
-            type="text" 
+          <input
+            type="text"
             placeholder="Search by name, member ID, or mobile..."
-            className="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-100 border border-slate-100 rounded-xl focus:ring-2 focus:-amber-500/20 focus:-amber-500 outline-none transition-all"
+            className="w-full pl-10 pr-4 py-3 border border-slate-100 focus:border-amber-400 rounded-2xl outline-none focus:ring-3 focus:ring-amber-500/20 transition ease-in duration-300"
             value={search}
             onChange={(e) => { setSearch(e.target.value); setPage(1); }}
           />
         </div>
       </div>
 
-      <div className="overflow-x-auto rounded-xl border border-slate-200 bg-white shadow-xl shadow-slate-200/50 shadow-sm">
-        <table className="animate-fade-in w-full text-left border-collapse [&_th]:bg-slate-50 border border-slate-100 [&_th]:text-slate-500 [&_th]:font-bold [&_th]:py-4 [&_th]:px-6 [&_th]:sticky [&_th]:top-0 [&_th]:z-10 [&_tbody_tr]:bg-white shadow-xl shadow-slate-200/50 [&_tbody_tr]:border-b [&_tbody_tr]:border-slate-100 [&_tbody_tr:hover]:bg-slate-50 border border-slate-100 [&_tbody_tr]:transition-colors [&_tbody_tr:nth-child(even)]:bg-slate-50 border border-slate-100/50 [&_td]:py-4 [&_td]:px-6">
+      <div className="overflow-x-auto rounded-2xl border border-slate-100 bg-white  ">
+        <table className="animate-fade-in w-full text-left border-collapse [&_th]:border-b-2 [&_th]:border-slate-100   [&_th]:text-slate-500 [&_th]:font-bold [&_th]:py-4 [&_th]:px-6 [&_th]:sticky [&_th]:top-0 [&_th]:z-10 [&_tbody_tr]:bg-white shadow-xl shadow-slate-200/50 [&_tbody_tr]:border-b [&_tbody_tr]:border-slate-100 [&_tbody_tr:hover]:bg-slate-50 [&_tbody_tr]:transition-colors [&_tbody_tr:nth-child(even)]:bg-slate-50 border border-slate-100/50 [&_td]:py-4 [&_td]:px-6">
           <thead>
             <tr>
-              <th>Member ID</th>
               <th>Name & Contact</th>
               <th>Class</th>
               <th className="text-center">Books Issued</th>
@@ -77,7 +76,6 @@ export default function MemberTable({ onEdit, onDelete }) {
               data.members.map((member) => {
                 return (
                   <tr key={member._id}>
-                    <td className="font-mono text-sm font-bold text-slate-900">{member.memberId}</td>
                     <td>
                       <div className="flex flex-col">
                         <span className="font-bold text-slate-900">{member.name}</span>
@@ -94,20 +92,20 @@ export default function MemberTable({ onEdit, onDelete }) {
                       </span>
                     </td>
                     <td className="text-center">
-                      <div className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-slate-500/5 border border-slate-500/10 font-black text-sm bg-slate-900">
+                      <div className="inline-flex items-center justify-center w-8 h-8 text-slate-600 rounded-full  border border-slate-200  text-sm ">
                         {member.activeIssues || 0}
                       </div>
                     </td>
                     <td>
                       {member.finesDue > 0 ? (
                         <div className="flex flex-col gap-1">
-                           <span className="text-red-500 font-black text-sm">₹{member.finesDue}</span>
-                           <span className="text-[9px] font-bold text-red-500 text-red-500/5 px-2 py-0.5 rounded-full uppercase tracking-tighter w-fit">Unpaid</span>
+                          <span className="text-red-500 font-black text-sm">₹{member.finesDue}</span>
+                          <span className="text-[9px] font-bold text-red-500  px-2 py-0.5 rounded-full uppercase tracking-tighter w-fit">Unpaid</span>
                         </div>
                       ) : (
                         <div className="flex flex-col gap-1">
-                           <span className="text-emerald-500 font-bold text-sm">₹0</span>
-                           <span className="text-[9px] font-bold text-emerald-500 text-emerald-500/5 px-2 py-0.5 rounded-full uppercase tracking-tighter w-fit">All Paid</span>
+                          <span className="text-emerald-500 font-bold text-sm">₹0</span>
+                          <span className="text-[9px] font-bold text-emerald-500  px-2 py-0.5 rounded-full uppercase tracking-tighter w-fit">All Paid</span>
                         </div>
                       )}
                     </td>
@@ -118,26 +116,26 @@ export default function MemberTable({ onEdit, onDelete }) {
                     </td>
                     <td className="text-right">
                       <div className="flex items-center justify-end gap-2">
-                        <button 
+                        <button
                           onClick={() => setViewMember(member)}
-                          className="p-2 text-slate-500 hover:text-blue-500 hover:bg-blue-50 rounded-lg transition-all"
+                          className="px-4 py-2 cursor-pointer flex items-center gap-2 bg-linear-to-r from-green-500 to-green-700 text-white rounded-3xl  hover:from-green-700 hover:to-green-500 transition ease-in duration-300 hover:shadow-2xl font-semibold text-base "
                           title="View Details"
                         >
-                          <Eye size={16} />
+                          View
                         </button>
-                        <button 
+                        <button
                           onClick={() => onEdit(member)}
-                          className="p-2 text-slate-500 hover:-amber-500 hover:-amber-500/10 rounded-lg transition-all"
+                          className="cursor-pointer flex items-center gap-2 bg-linear-to-r from-violet-500 to-violet-700 text-white rounded-2xl px-4 py-2 hover:from-violet-700 hover:to-violet-500 transition ease-in duration-300 hover:shadow-2xl font-semibold text-base"
                           title="Edit"
                         >
-                          <Edit2 size={16} />
+                          Edit
                         </button>
-                        <button 
+                        <button
                           onClick={() => onDelete(member)}
-                          className="p-2 text-slate-500 hover:-red-500 hover:-red-500/10 rounded-lg transition-all"
+                          className="cursor-pointer flex items-center gap-2 bg-linear-to-r from-rose-500 to-rose-700 text-white rounded-2xl px-4 py-2 hover:from-rose-700 hover:to-rose-500 transition ease-in duration-300 hover:shadow-2xl font-semibold text-base"
                           title="Delete"
                         >
-                          <Trash2 size={16} />
+                          Delete
                         </button>
                       </div>
                     </td>
@@ -161,17 +159,17 @@ export default function MemberTable({ onEdit, onDelete }) {
             Page <span className="font-bold">{page}</span> of <span className="font-bold">{data.pagination.pages}</span>
           </p>
           <div className="flex items-center gap-2">
-            <button 
+            <button
               disabled={page === 1}
               onClick={() => setPage(p => p - 1)}
-              className="p-2 rounded-lg border border-slate-100 hover:bg-slate-50 border border-slate-100 disabled:opacity-50 transition-all"
+              className="p-2 rounded-lg  hover:bg-slate-50 border border-slate-100 disabled:opacity-50 transition-all"
             >
               <ChevronLeft size={20} />
             </button>
-            <button 
+            <button
               disabled={page === data.pagination.pages}
               onClick={() => setPage(p => p + 1)}
-              className="p-2 rounded-lg border border-slate-100 hover:bg-slate-50 border border-slate-100 disabled:opacity-50 transition-all"
+              className="p-2 rounded-lg  hover:bg-slate-50 border border-slate-100 disabled:opacity-50 transition-all"
             >
               <ChevronRight size={20} />
             </button>

@@ -51,15 +51,15 @@ export default function BooksPage() {
             <p className="text-slate-500 font-medium">Manage your library's inventory, stock, and categories</p>
           </div>
           <div className="flex items-center gap-3">
-            <button className="btn-secondary px-5 py-3">
+            <button className=" cursor-pointer flex items-center gap-2 bg-linear-to-r from-violet-500 to-violet-700 text-white rounded-2xl px-5 py-3 hover:from-violet-700 hover:to-violet-500 transition ease-in duration-300 hover:shadow-2xl">
               <FileUp size={20} />
               <span>Import CSV</span>
             </button>
-            <button className="btn-secondary px-5 py-3">
+            <button className=" cursor-pointer flex items-center gap-2 bg-linear-to-r from-green-500 to-green-700 text-white rounded-2xl px-5 py-3 hover:from-green-700 hover:to-green-500 transition ease-in duration-300 hover:shadow-2xl">
               <FileDown size={20} />
               <span>Export Excel</span>
             </button>
-            <button onClick={handleAdd} className="btn-primary px-6 py-3 shadow-lg shadow-amber-500/20">
+            <button onClick={handleAdd} className=" cursor-pointer flex items-center gap-2 bg-linear-to-r from-amber-400 to-amber-500 text-white rounded-2xl px-5 py-3 hover:from-amber-500 hover:to-amber-400 transition ease-in duration-300 hover:shadow-2xl">
               <Plus size={20} />
               <span>Add New Book</span>
             </button>
@@ -69,9 +69,9 @@ export default function BooksPage() {
         <BookTable onEdit={handleEdit} onDelete={handleDelete} />
       </div>
 
-      <BookModal 
-        isOpen={isModalOpen} 
-        onClose={() => setIsModalOpen(false)} 
+      <BookModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
         book={selectedBook}
         onSave={handleSave}
       />

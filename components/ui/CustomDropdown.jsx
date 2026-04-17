@@ -4,12 +4,12 @@ import { useState, useRef, useEffect } from 'react'
 import { ChevronDown, Search, Check } from 'lucide-react'
 import clsx from 'clsx'
 
-export default function CustomDropdown({ 
-  options, 
-  value, 
-  onChange, 
-  placeholder = "Select Option", 
-  label, 
+export default function CustomDropdown({
+  options,
+  value,
+  onChange,
+  placeholder = "Select Option",
+  label,
   searchable = false,
   className = ""
 }) {
@@ -36,8 +36,8 @@ export default function CustomDropdown({
     const val = typeof opt === 'string' ? opt : opt.value
     return val === value
   })
-  
-  const displayLabel = currentLabel 
+
+  const displayLabel = currentLabel
     ? (typeof currentLabel === 'string' ? currentLabel : currentLabel.label)
     : placeholder
 
@@ -48,44 +48,33 @@ export default function CustomDropdown({
           {label}
         </label>
       )}
-      
+
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
         className={clsx(
-          "w-full px-4 py-3 bg-slate-50 border border-slate-100 border rounded-xl flex items-center justify-between transition-all duration-300 font-medium",
-          isOpen ? "text-amber-500 ring-2 text-amber-500/10" : "border-slate-100"
+          "w-full px-4 py-3 mb-0 rounded-xl flex items-center justify-between transition-all duration-300 font-medium",
+
+          isOpen
+            ? "text-amber-500 border border-amber-400 ring-2 ring-amber-500/20"
+            : "bg-slate-50 border border-slate-100"
         )}
       >
         <span className={clsx("truncate", !value && "text-gray-400")}>
           {displayLabel}
         </span>
-        <ChevronDown 
-          size={18} 
-          className={clsx("text-slate-500 transition-transform duration-300", isOpen && "rotate-180 text-amber-500")} 
+        <ChevronDown
+          size={18}
+          className={clsx("text-slate-500 transition-transform duration-300", isOpen && "rotate-180 text-amber-500")}
         />
       </button>
 
       {/* Dropdown Menu */}
       <div className={clsx(
-        "absolute left-0 right-0 mt-2 bg-white shadow-xl shadow-slate-200/50 border border-slate-100 rounded-xl shadow-2xl z-50 overflow-hidden transition-all duration-300 origin-top",
+        "absolute left-0 right-0 mt-2 bg-white shadow-slate-200/50 border border-slate-100 rounded-xl shadow-2xl z-50 overflow-hidden transition-all duration-300 origin-top",
         isOpen ? "opacity-100 scale-y-100 translate-y-0" : "opacity-0 scale-y-95 -translate-y-2 pointer-events-none"
       )}>
-        {searchable && (
-          <div className="p-2 border-b border-slate-100">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={14} />
-              <input
-                type="text"
-                className="w-full pl-9 pr-3 py-2 bg-slate-50 border border-slate-100 border border-slate-100 rounded-lg text-sm focus:outline-none focus:-amber-500 transition-colors"
-                placeholder="Search..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                onClick={(e) => e.stopPropagation()}
-              />
-            </div>
-          </div>
-        )}
+
 
         <div className="max-h-60 overflow-y-auto py-2 px-1 custom-scrollbar">
           {filteredOptions.length > 0 ? (
@@ -104,8 +93,8 @@ export default function CustomDropdown({
                     setSearchTerm('');
                   }}
                   className={clsx(
-                    "w-full px-4 py-2.5 text-left text-sm rounded-lg transition-all flex items-center justify-between group",
-                    isSelected ? "text-amber-500/10 text-amber-500 font-bold" : "text-slate-500 hover:bg-slate-50 border border-slate-100 hover:-slate-900"
+                    "w-full px-4 py-2.5 text-left font-bold text-base transition-all flex items-center justify-between group",
+                    isSelected ? " text-amber-500 " : "text-slate-500  "
                   )}
                 >
                   <span className="truncate">{label}</span>

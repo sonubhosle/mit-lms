@@ -16,7 +16,7 @@ export default function TopBar({ title }) {
   }, [])
 
   return (
-    <header className="h-20 bg-white/80 backdrop-blur-xl shadow-xl shadow-slate-200/50 border border-white/60 mx-8 mt-6 rounded-4xl flex items-center justify-between px-8 sticky top-6 z-30">
+    <header className="h-20 bg-white/80 backdrop-blur-xl shadow-xl shadow-slate-200/50 border border-white/60 mx-8 mt-6 rounded-2xl flex items-center justify-between px-8 sticky top-6 z-30">
       <div>
         <h2 className="text-2xl font-black bg-linear-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent">{title}</h2>
       </div>

@@ -10,6 +10,11 @@ const RATE = 10 // ₹ per day
 export default function LateReturnModal({ isOpen, onClose, transaction }) {
   const [isVisible, setIsVisible] = useState(false);
   const [isRendered, setIsRendered] = useState(isOpen);
+  const [daysLate, setDaysLate] = useState(1)
+  const [remarks, setRemarks] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [done, setDone] = useState(false)
+  const [result, setResult] = useState(null)
 
   useEffect(() => {
     if (isOpen) {
@@ -23,15 +28,7 @@ export default function LateReturnModal({ isOpen, onClose, transaction }) {
     }
   }, [isOpen]);
 
-  if (!isRendered) return null;
-
-  const [daysLate, setDaysLate] = useState(1)
-  const [remarks, setRemarks] = useState('')
-  const [loading, setLoading] = useState(false)
-  const [done, setDone] = useState(false)
-  const [result, setResult] = useState(null)
-
-  if (!isOpen || !transaction) return null
+  if (!isRendered || !transaction) return null;
 
   const fine = daysLate * RATE
 
@@ -72,7 +69,7 @@ export default function LateReturnModal({ isOpen, onClose, transaction }) {
 
   return (
     <div className={`fixed inset-0 z-9999 flex items-center justify-center transition-all duration-300 backdrop-blur-sm ${isVisible ? "opacity-100 bg-slate-900/40" : "opacity-0 bg-transparent"}  p-4 bg-slate-900/60 backdrop-blur-sm`} onClick={e => e.target === e.currentTarget && handleClose()}>
-      <div className={`bg-white transition-all duration-300 ease-out transform ${isVisible ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-8 scale-95"} shadow-xl shadow-slate-200/50 rounded-[2rem] w-full max-w-md overflow-hidden `}>
+      <div className={`bg-white transition-all duration-300 ease-out transform ${isVisible ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-8 scale-95"} shadow-xl shadow-slate-200/50 rounded-4xl w-full max-w-md overflow-hidden `}>
 
         {/* Header */}
         <div className="bg-linear-to-r from-orange-500 to-red-600 text-white px-7 py-5 flex items-center justify-between">
@@ -97,7 +94,7 @@ export default function LateReturnModal({ isOpen, onClose, transaction }) {
               <CheckCircle2 size={32} />
             </div>
             <h4 className="text-xl font-bold text-slate-900">Return Processed</h4>
-            <div className="bg-slate-50 border border-slate-100 border border-slate-100 rounded-2xl p-5 text-left space-y-2">
+            <div className="bg-slate-50  border border-slate-100 rounded-2xl p-5 text-left space-y-2">
               <div className="flex justify-between text-sm">
                 <span className="text-slate-500">Book</span>
                 <span className="font-semibold text-slate-900 truncate max-w-[200px]">{transaction.bookId?.title}</span>
@@ -123,7 +120,7 @@ export default function LateReturnModal({ isOpen, onClose, transaction }) {
           /* Input State */
           <div className="p-7 space-y-6">
             {/* Book info */}
-            <div className="bg-slate-50 border border-slate-100 rounded-2xl p-4 border border-slate-100 shadow-sm">
+            <div className="bg-slate-50 rounded-2xl p-4 border border-slate-100 shadow-sm">
               <p className="font-bold text-slate-900 line-clamp-1">{transaction.bookId?.title}</p>
               <p className="text-xs text-slate-500 mt-1">{transaction.memberId?.name} · {transaction.memberId?.memberId}</p>
             </div>
@@ -172,19 +169,19 @@ export default function LateReturnModal({ isOpen, onClose, transaction }) {
                 value={remarks}
                 onChange={e => setRemarks(e.target.value)}
                 placeholder={`Late return — ${daysLate} day(s) overdue`}
-                className="w-full px-4 py-3 border border-slate-100 rounded-xl focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 outline-none text-sm bg-slate-50 border border-slate-100 transition-all"
+                className="w-full px-4 py-3  rounded-xl focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 outline-none text-sm bg-slate-50 border border-slate-100 transition-all"
               />
             </div>
 
             {/* Actions */}
             <div className="flex gap-3 pt-2">
-              <button onClick={handleClose} className="flex-1 py-4 border-2 border-slate-100 text-slate-500 font-bold rounded-2xl hover:bg-slate-50 border border-slate-100 transition-all">
+              <button onClick={handleClose} className="flex-1 py-4  text-slate-500 font-bold rounded-2xl hover:bg-slate-50 border border-slate-100 transition-all">
                 Cancel
               </button>
               <button
                 onClick={handleSubmit}
                 disabled={loading}
-                className="flex-[2] py-4 bg-linear-to-r from-orange-500 to-red-600 text-white font-bold rounded-2xl flex items-center justify-center gap-2 hover:opacity-90 disabled:opacity-50 transition-all shadow-lg shadow-orange-500/30"
+                className="flex-2 py-4 bg-linear-to-r from-orange-500 to-red-600 text-white font-bold rounded-2xl flex items-center justify-center gap-2 hover:opacity-90 disabled:opacity-50 transition-all shadow-lg shadow-orange-500/30"
               >
                 {loading ? <Loader2 className="animate-spin" size={22} /> : (
                   <>

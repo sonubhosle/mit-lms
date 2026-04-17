@@ -52,11 +52,11 @@ export default function LoginPage() {
 
 
       <div className={clsx(
-        "w-full max-w-md bg-white shadow-xl shadow-slate-200/50/10 backdrop-blur-xl border border-white/20 rounded-xl p-6 md:p-10 shadow-2xl relative z-10 animate-fade-in transition-all duration-300",
+        "w-full max-w-md bg-white  shadow-slate-200/50/10 backdrop-blur-xl border border-white/20 rounded-xl p-6 md:p-10 shadow-2xl relative z-10 animate-fade-in transition-all duration-300",
         error && "animate-shake"
       )}>
         <div className="flex gap-4  mb-6">
-          <div className="w-18 h-18 bg-white shadow-xl shadow-slate-200/50 rounded-3xl flex items-center justify-center shadow-2xl shadowbg-amber-500/40 mb-6 transform hover:scale-110 transition-transform duration-500 overflow-hidden p-2">
+          <div className="w-18 h-18 bg-white  shadow-slate-200/50 rounded-3xl flex items-center justify-center shadow-2xl shadowbg-amber-500/40 mb-6 transform hover:scale-110 transition-transform duration-500 overflow-hidden p-2">
             <img src="/assets/logo.png" alt="MIT College Logo" className="w-full h-full object-contain" />
           </div>
           <div>

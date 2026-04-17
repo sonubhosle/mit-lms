@@ -11,6 +11,11 @@ const RATE_PER_DAY = 10
 export default function PaymentModal({ isOpen, onClose, transaction: initialTxn, onPaymentSuccess }) {
   const [isVisible, setIsVisible] = useState(false);
   const [isRendered, setIsRendered] = useState(isOpen);
+  const [loading, setLoading] = useState(false)
+  const [transaction, setTransaction] = useState(null)
+  const [mode, setMode] = useState('auto') // 'auto' | 'manual'
+  const [daysLate, setDaysLate] = useState('')
+  const [customRemarks, setCustomRemarks] = useState('')
 
   useEffect(() => {
     if (isOpen) {
@@ -24,26 +29,18 @@ export default function PaymentModal({ isOpen, onClose, transaction: initialTxn,
     }
   }, [isOpen]);
 
-  if (!isRendered) return null;
-
-  const [loading, setLoading] = useState(false)
-  const [transaction, setTransaction] = useState(null)
-  const [mode, setMode] = useState('auto') // 'auto' | 'manual'
-  const [daysLate, setDaysLate] = useState('')
-  const [customRemarks, setCustomRemarks] = useState('')
-
   // Sync local state when transaction prop changes
   const tx = transaction || initialTxn
 
-  if (!isOpen || !tx) return null
+  if (!isRendered || !tx) return null
 
   const isLost = tx.status === 'lost'
   const bookPrice = tx.bookId?.price || 0
   const isPaid = tx.finePaid || tx.fineAmount === 0
-  
+
   // Compute fine for display
   const autoFine = tx.fineAmount || 0
-  const manualFine = mode === 'manual' 
+  const manualFine = mode === 'manual'
     ? (parseInt(daysLate) || 0) * RATE_PER_DAY + (isLost ? bookPrice : 0)
     : autoFine
   const displayFine = mode === 'manual' ? manualFine : autoFine
@@ -66,7 +63,7 @@ export default function PaymentModal({ isOpen, onClose, transaction: initialTxn,
       })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error || 'Payment failed')
-      
+
       toast.success("Payment recorded successfully!")
       setTransaction(data.transaction)
       if (onPaymentSuccess) onPaymentSuccess(data.transaction)
@@ -90,12 +87,12 @@ export default function PaymentModal({ isOpen, onClose, transaction: initialTxn,
   }
 
   return (
-    <div className={`fixed inset-0 z-[9999] flex items-center justify-center transition-all duration-300 backdrop-blur-sm ${isVisible ? "opacity-100 bg-slate-900/40" : "opacity-0 bg-transparent"}  p-4 bg-slate-900/60 backdrop-blur-sm`} onClick={(e) => e.target === e.currentTarget && handleClose()}>
-      <div className={`bg-white transition-all duration-300 ease-out transform ${isVisible ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-8 scale-95"} shadow-xl shadow-slate-200/50 rounded-[2rem] w-full max-w-lg shadow-2xl overflow-hidden `}>
+    <div className={`fixed inset-0 z-9999 flex items-center justify-center transition-all duration-300 backdrop-blur-sm ${isVisible ? "opacity-100 bg-slate-900/40" : "opacity-0 bg-transparent"}  p-4 bg-slate-900/60 backdrop-blur-sm`} onClick={(e) => e.target === e.currentTarget && handleClose()}>
+      <div className={`bg-white transition-all duration-300 ease-out transform ${isVisible ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-8 scale-95"}  shadow-slate-200/50  w-full max-w-lg shadow-2xl overflow-hidden `}>
         {/* Header */}
         <div className="bg-linear-to-r from-slate-900 to-slate-800 p-6 text-white flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-amber-500 rounded-xl flex items-center justify-center bg-slate-900">
+            <div className="w-10 h-10 bg-amber-500 rounded-xl flex items-center justify-center">
               <FileText size={20} strokeWidth={3} />
             </div>
             <div>
@@ -110,7 +107,7 @@ export default function PaymentModal({ isOpen, onClose, transaction: initialTxn,
 
         <div className="p-6 space-y-5">
           {/* Member & Book Summary */}
-          <div className="flex items-center gap-4 p-4 bg-slate-50 border border-slate-100 rounded-2xl border border-slate-100">
+          <div className="flex items-center gap-4 p-4 bg-slate-50  rounded-2xl border border-slate-100">
             <div className="w-11 h-11 bg-slate-900 rounded-full flex items-center justify-center font-black text-white text-lg">
               {tx.memberId?.name?.[0]}
             </div>
@@ -121,7 +118,7 @@ export default function PaymentModal({ isOpen, onClose, transaction: initialTxn,
             <span className={clsx(
               "px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest",
               tx.status === 'returned' ? 'bg-green-100 text-green-700' :
-              tx.status === 'lost' ? 'bg-red-100 text-red-700' : 'bg-blue-100 text-blue-700'
+                tx.status === 'lost' ? 'bg-red-100 text-red-700' : 'bg-blue-100 text-blue-700'
             )}>
               {tx.status}
             </span>
@@ -134,18 +131,18 @@ export default function PaymentModal({ isOpen, onClose, transaction: initialTxn,
                 <Calculator size={14} className="text-slate-500" />
                 <span className="text-xs font-bold text-slate-500 uppercase tracking-widest">Fine Calculation</span>
               </div>
-              
+
               {/* Mode Toggle */}
               <div className="flex bg-slate-100 rounded-xl p-1">
                 <button
                   onClick={() => setMode('auto')}
-                  className={clsx("flex-1 py-2 rounded-lg text-sm font-bold transition-all", mode === 'auto' ? 'bg-white shadow-xl shadow-slate-200/50 text-slate-900 shadow-sm' : 'text-slate-500')}
+                  className={clsx("flex-1 py-2 rounded-lg text-sm font-bold transition-all", mode === 'auto' ? 'bg-white shadow-xl shadow-slate-200/50 text-slate-900' : 'text-slate-500')}
                 >
                   Auto-Calculated
                 </button>
                 <button
                   onClick={() => setMode('manual')}
-                  className={clsx("flex-1 py-2 rounded-lg text-sm font-bold transition-all", mode === 'manual' ? 'bg-white shadow-xl shadow-slate-200/50 text-slate-900 shadow-sm' : 'text-slate-500')}
+                  className={clsx("flex-1 py-2 rounded-lg text-sm font-bold transition-all", mode === 'manual' ? 'bg-white shadow-xl shadow-slate-200/50 text-slate-900' : 'text-slate-500')}
                 >
                   Manual Entry
                 </button>
@@ -186,7 +183,7 @@ export default function PaymentModal({ isOpen, onClose, transaction: initialTxn,
                   </div>
                 </div>
               ) : (
-                <div className="text-xs text-slate-500 bg-slate-50 border border-slate-100 border border-slate-100 px-4 py-3 rounded-xl">
+                <div className="text-xs text-slate-500 bg-slate-50 border  border-slate-100 px-4 py-3 rounded-xl">
                   Fine auto-calculated from the return date and due date. ₹10/day for late returns{isLost ? ' + full book price for lost books.' : '.'}
                 </div>
               )}
@@ -208,7 +205,7 @@ export default function PaymentModal({ isOpen, onClose, transaction: initialTxn,
             </div>
             <div className={clsx(
               "px-4 py-2 rounded-xl text-xs font-black uppercase tracking-tighter",
-              isPaid ? "text-emerald-500 text-slate-900" : "text-amber-500 text-slate-900"
+              isPaid ? "text-emerald-500" : "text-amber-500"
             )}>
               {isPaid ? "✓ Paid" : "Pending"}
             </div>
@@ -229,7 +226,7 @@ export default function PaymentModal({ isOpen, onClose, transaction: initialTxn,
               )}
             </button>
           ) : (
-            <div className="flex items-center gap-3 p-4 text-emerald-500/10 text-emerald-500 rounded-2xl font-bold text-sm border text-emerald-500/20">
+            <div className="flex items-center gap-3 p-4   rounded-2xl font-bold text-sm border text-emerald-500/20">
               <CheckCircle2 size={22} />
               Fine of ₹{tx.fineAmount} collected & recorded
             </div>
@@ -246,7 +243,7 @@ export default function PaymentModal({ isOpen, onClose, transaction: initialTxn,
             </button>
             <button
               onClick={handleClose}
-              className="py-3 border-2 border-slate-100 text-slate-500 rounded-xl font-bold text-sm hover:bg-slate-50 border border-slate-100 transition-all"
+              className="py-3 border-2  text-slate-500 rounded-xl font-bold text-sm hover:bg-slate-50 border-slate-100 transition-all"
             >
               Close
             </button>
