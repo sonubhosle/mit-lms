@@ -32,8 +32,8 @@ export default function Sidebar() {
   const { user, logout } = useAuth()
 
   return (
-    <aside className="fixed left-6 top-6 bottom-6 w-[300px] bg-white shadow-2xl shadow-slate-200/50 rounded-4xl flex flex-col z-40 border border-white/60">
-      <div className="p-8 pb-4">
+    <aside className="fixed h-screen left-0 top-0  w-[270px] bg-white border-r border-slate-100   flex flex-col z-40 ">
+      <div className="p-3 pb-4">
         <div className="flex items-center gap-3">
           <div className="w-16 h-16 border border-slate-100 rounded-3xl p-2">
             <img src="/assets/logo.png" alt="MIT Logo" className="w-full h-full object-contain " />
@@ -47,7 +47,7 @@ export default function Sidebar() {
         {navItems.map((item) => {
           if (item.adminOnly && user?.role !== 'superadmin') return null
 
-          const isActive = pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href))
+          const isActive = pathname === item.href
 
           return (
             <Link

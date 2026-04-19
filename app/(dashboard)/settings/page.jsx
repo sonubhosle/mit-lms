@@ -1,12 +1,12 @@
 "use client"
 
 import { useState, useEffect } from 'react'
-import { 
-  Building2, 
-  Settings as SettingsIcon, 
-  ShieldCheck, 
-  Database, 
-  Save, 
+import {
+  Building2,
+  Settings as SettingsIcon,
+  ShieldCheck,
+  Database,
+  Save,
   Loader2,
   CheckCircle2
 } from 'lucide-react'
@@ -73,7 +73,7 @@ export default function SettingsPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
               <label className="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1">Library Name</label>
-              <input 
+              <input
                 className="w-full px-4 py-3 bg-slate-50 border border-slate-100 border border-slate-100 rounded-xl focus:ring-2 focus:-amber-500/20 outline-none"
                 value={settings.libraryName}
                 onChange={(e) => setSettings({ ...settings, libraryName: e.target.value })}
@@ -81,7 +81,7 @@ export default function SettingsPage() {
             </div>
             <div className="space-y-2">
               <label className="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1">Contact Phone</label>
-              <input 
+              <input
                 className="w-full px-4 py-3 bg-slate-50 border border-slate-100 border border-slate-100 rounded-xl focus:ring-2 focus:-amber-500/20 outline-none"
                 value={settings.libraryPhone}
                 onChange={(e) => setSettings({ ...settings, libraryPhone: e.target.value })}
@@ -89,7 +89,7 @@ export default function SettingsPage() {
             </div>
             <div className="col-span-full space-y-2">
               <label className="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1">Address</label>
-              <input 
+              <input
                 className="w-full px-4 py-3 bg-slate-50 border border-slate-100 border border-slate-100 rounded-xl focus:ring-2 focus:-amber-500/20 outline-none"
                 value={settings.libraryAddress}
                 onChange={(e) => setSettings({ ...settings, libraryAddress: e.target.value })}
@@ -108,7 +108,7 @@ export default function SettingsPage() {
               <label className="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1">Fine Amount (per day)</label>
               <div className="relative">
                 <span className="absolute left-4 top-1/2 -translate-y-1/2 font-bold text-slate-500">₹</span>
-                <input 
+                <input
                   type="number"
                   className="w-full pl-8 pr-4 py-3 bg-slate-50 border border-slate-100 border border-slate-100 rounded-xl focus:ring-2 focus:-amber-500/20 outline-none font-bold"
                   value={settings.finePerDay}
@@ -118,7 +118,7 @@ export default function SettingsPage() {
             </div>
             <div className="space-y-2">
               <label className="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1">Default Borrow Duration (Days)</label>
-              <input 
+              <input
                 type="number"
                 className="w-full px-4 py-3 bg-slate-50 border border-slate-100 border border-slate-100 rounded-xl focus:ring-2 focus:-amber-500/20 outline-none font-bold"
                 value={settings.defaultBorrowDays}
@@ -142,15 +142,15 @@ export default function SettingsPage() {
               <div className="absolute right-1 top-1 w-4 h-4 bg-white shadow-xl shadow-slate-200/50 rounded-full"></div>
             </div>
           </div>
-          <button type="button" className="w-full mt-6 py-4 border-2 border-dashed border-slate-200 rounded-2xl font-bold text-slate-500 hover:-amber-500 transition-all">
+          <button type="button" className="w-full mt-6 py-4 border-2 border-dashed border-slate-100 rounded-2xl font-bold text-slate-500 hover:-amber-500 transition-all">
             Trigger Manual Database Dump
           </button>
         </section>
 
         <div className="flex items-center justify-between fixed bottom-8 left-[292px] right-8 bg-white shadow-xl shadow-slate-200/50/80 backdrop-blur p-4 rounded-2xl shadow-2xl border border-slate-100 z-50">
           <p className="text-sm text-slate-500 px-4">Last updated: Today at 02:45 PM</p>
-          <button 
-            type="submit" 
+          <button
+            type="submit"
             disabled={loading}
             className="btn-primary min-w-[200px] py-3 shadow-lg shadow-amber-500/20"
           >

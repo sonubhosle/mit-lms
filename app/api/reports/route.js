@@ -1,3 +1,5 @@
+
+
 import { NextResponse } from 'next/server'
 import { getSession } from '@/lib/jwt'
 import dbConnect from '@/lib/mongodb'
@@ -36,6 +38,23 @@ export async function GET(req) {
       })
     }
 
+    if (type === 'monthly-trends') {
+      const today = new Date()
+      const thirtyDaysAgo = subDays(today, 30)
+      const trends = await Transaction.aggregate([
+        { $match: { createdAt: { $gte: thirtyDaysAgo } } },
+        {
+          $group: {
+            _id: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } },
+            issues: { $sum: { $cond: [{ $eq: ["$status", "issued"] }, 1, 0] } },
+            returns: { $sum: { $cond: [{ $eq: ["$status", "returned"] }, 1, 0] } }
+          }
+        },
+        { $sort: { _id: 1 } }
+      ])
+      return NextResponse.json(trends)
+    }
+
     if (type === 'top-books') {
       const topBooks = await Transaction.aggregate([
         { $group: { _id: "$bookId", count: { $sum: 1 } } },
@@ -52,6 +71,15 @@ export async function GET(req) {
         { $unwind: "$book" }
       ])
       return NextResponse.json(topBooks)
+    }
+
+    if (type === 'genre-stats') {
+      const stats = await Book.aggregate([
+        { $match: { isActive: true } },
+        { $group: { _id: "$genre", value: { $sum: 1 } } },
+        { $sort: { value: -1 } }
+      ])
+      return NextResponse.json(stats)
     }
 
     return NextResponse.json({ error: 'Invalid report type' }, { status: 400 })

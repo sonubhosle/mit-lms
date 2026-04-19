@@ -27,7 +27,7 @@ export default function AuditLogsPage() {
         <p className="text-slate-500 font-medium">Complete history of all critical system operations and user actions</p>
       </div>
 
-      <div className="overflow-x-auto rounded-xl border border-slate-200 bg-white shadow-xl shadow-slate-200/50 shadow-sm">
+      <div className="overflow-x-auto rounded-xl border border-slate-100 bg-white shadow-xl shadow-slate-200/50 shadow-sm">
         <table className="w-full text-left border-collapse [&_th]:bg-slate-50 border border-slate-100 [&_th]:text-slate-500 [&_th]:font-bold [&_th]:py-4 [&_th]:px-6 [&_th]:sticky [&_th]:top-0 [&_th]:z-10 [&_tbody_tr]:bg-white shadow-xl shadow-slate-200/50 [&_tbody_tr]:border-b [&_tbody_tr]:border-slate-100 [&_tbody_tr:hover]:bg-slate-50 border border-slate-100 [&_tbody_tr]:transition-colors [&_tbody_tr:nth-child(even)]:bg-slate-50 border border-slate-100/50 [&_td]:py-4 [&_td]:px-6">
           <thead>
             <tr>
@@ -80,7 +80,7 @@ export default function AuditLogsPage() {
 
       {data?.pagination && data.pagination.pages > 1 && (
         <div className="flex items-center justify-center gap-4 py-4">
-          <button 
+          <button
             disabled={page === 1}
             onClick={() => setPage(p => p - 1)}
             className="px-6 py-2 bg-white shadow-xl shadow-slate-200/50 border border-slate-100 rounded-xl font-bold text-slate-900 hover:bg-slate-50 border border-slate-100 transition-all disabled:opacity-50 shadow-soft"
@@ -88,7 +88,7 @@ export default function AuditLogsPage() {
             Previous
           </button>
           <span className="font-bold text-slate-900">Page {page} of {data.pagination.pages}</span>
-          <button 
+          <button
             disabled={page === data.pagination.pages}
             onClick={() => setPage(p => p + 1)}
             className="px-6 py-2 bg-white shadow-xl shadow-slate-200/50 border border-slate-100 rounded-xl font-bold text-slate-900 hover:bg-slate-50 border border-slate-100 transition-all disabled:opacity-50 shadow-soft"

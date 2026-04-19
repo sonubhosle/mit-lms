@@ -42,7 +42,7 @@ export default function OverduePage() {
         </div>
       </div>
 
-      <div className="overflow-x-auto rounded-xl border border-slate-200 bg-white shadow-xl shadow-slate-200/50 shadow-sm">
+      <div className="overflow-x-auto rounded-xl border border-slate-100 bg-white shadow-xl shadow-slate-200/50 shadow-sm">
         <table className="w-full text-left border-collapse [&_th]:bg-slate-50 border border-slate-100 [&_th]:text-slate-500 [&_th]:font-bold [&_th]:py-4 [&_th]:px-6 [&_th]:sticky [&_th]:top-0 [&_th]:z-10 [&_tbody_tr]:bg-white shadow-xl shadow-slate-200/50 [&_tbody_tr]:border-b [&_tbody_tr]:border-slate-100 [&_tbody_tr:hover]:bg-slate-50 border border-slate-100 [&_tbody_tr]:transition-colors [&_tbody_tr:nth-child(even)]:bg-slate-50 border border-slate-100/50 [&_td]:py-4 [&_td]:px-6">
           <thead>
             <tr>
@@ -93,7 +93,7 @@ export default function OverduePage() {
                       </div>
                     </td>
                     <td className="text-right">
-                      <button 
+                      <button
                         onClick={() => handleReturn(tx._id)}
                         className="px-4 py-2 bg-slate-900 text-white text-xs font-bold rounded-xl hover:-slate-950 transition-all flex items-center gap-2 ml-auto"
                       >

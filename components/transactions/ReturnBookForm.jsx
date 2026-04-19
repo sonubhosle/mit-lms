@@ -5,6 +5,7 @@ import { Search, RotateCcw, Loader2, CheckCircle2, AlertCircle, IndianRupee, Boo
 import { format, differenceInDays } from 'date-fns'
 import clsx from 'clsx'
 import { generateInvoice } from '@/lib/utils/generateInvoice'
+import { toast } from 'react-hot-toast'
 
 export default function ReturnBookForm({ onSuccess }) {
   const [txnSearch, setTxnSearch] = useState('')
@@ -24,8 +25,8 @@ export default function ReturnBookForm({ onSuccess }) {
       const data = await res.json()
 
       // Find an active issue OR a returned/lost book with unpaid fines
-      const found = data.find(t => 
-        (t.transactionId === txnSearch || t.bookId?.isbn === txnSearch) && 
+      const found = data.find(t =>
+        (t.transactionId === txnSearch || t.bookId?.isbn === txnSearch) &&
         (t.status === 'issued' || (t.fineAmount > 0 && !t.finePaid))
       )
 
@@ -49,7 +50,7 @@ export default function ReturnBookForm({ onSuccess }) {
       })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error || 'Return failed')
-      
+
       setTransaction(data.transaction) // Update with latest server state
       setSuccess(true)
       onSuccess()
@@ -77,7 +78,7 @@ export default function ReturnBookForm({ onSuccess }) {
       })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error || 'Payment failed')
-      
+
       setTransaction(data.transaction) // Update with latest session (finePaid will be true)
       toast.success("Payment recorded successfully!")
     } catch (err) {
@@ -97,9 +98,9 @@ export default function ReturnBookForm({ onSuccess }) {
           {transaction.status === 'lost' ? 'Loss Reported' : 'Book Returned'}
         </h3>
         <p className="text-slate-500 italic font-medium">"{transaction.bookId?.title}"</p>
-        
+
         {transaction.fineAmount > 0 && !transaction.finePaid && (
-          <div className="text-red-500/5 border text-red-500/10 p-6 rounded-2xl relative overflow-hidden group">
+          <div className="text-red-500/5 border p-6 rounded-2xl relative overflow-hidden group">
             <div className="relative z-10">
               <p className="text-xs font-bold text-red-500 uppercase tracking-widest mb-1">Fine Outstanding</p>
               <p className="text-4xl font-black text-red-500 mb-4 flex items-center justify-center gap-1">
@@ -108,7 +109,7 @@ export default function ReturnBookForm({ onSuccess }) {
               <button
                 onClick={handlePayFine}
                 disabled={submitting}
-                className="w-full py-4 text-red-500 text-slate-900 rounded-xl font-bold hover:bg-red-600 transition-all flex items-center justify-center gap-2 shadow-lg shadow-danger/20"
+                className="w-full py-4 bg-red-50 text-red-600 rounded-xl font-bold hover:bg-red-600 hover:text-white transition-all flex items-center justify-center gap-2 shadow-lg shadow-red-200/50"
               >
                 {submitting ? <Loader2 className="animate-spin" size={20} /> : (
                   <>
@@ -118,7 +119,7 @@ export default function ReturnBookForm({ onSuccess }) {
                 )}
               </button>
             </div>
-            <IndianRupee className="absolute -right-4 -bottom-4 text-red-500/5 group-hover:-red-500/10 transition-colors" size={120} />
+            <IndianRupee className="absolute -right-4 -bottom-4 text-red-500/5 group-hover:text-red-500/10 transition-colors" size={120} />
           </div>
         )}
 
@@ -137,10 +138,10 @@ export default function ReturnBookForm({ onSuccess }) {
             <Download size={24} strokeWidth={3} />
             <span className="uppercase tracking-tight">Print Official Receipt</span>
           </button>
-          
+
           <button
             onClick={() => { setSuccess(false); setTransaction(null); setTxnSearch(''); }}
-            className="w-full py-4 border-2 border-slate-100 text-slate-500 font-bold rounded-2xl hover:bg-slate-50 border border-slate-100 hover:border-slate-200 transition-all flex items-center justify-center gap-2"
+            className="w-full py-4 bg-slate-50 text-slate-500 font-bold rounded-2xl hover:bg-slate-100 border border-slate-100 transition-all flex items-center justify-center gap-2"
           >
             <CheckCircle2 size={18} />
             <span>Complete Transaction</span>
@@ -177,12 +178,12 @@ export default function ReturnBookForm({ onSuccess }) {
                   Find Active Transaction
                 </label>
                 <div className="relative group">
-                  <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-500 transition-colors group-focus-within:-amber-500" size={20} />
+                  <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-500 transition-colors group-focus-within:text-amber-500" size={20} />
                   <input
                     autoFocus
                     type="text"
                     placeholder="Scan ISBN or Enter Transaction ID..."
-                    className="w-full pl-14 pr-6 py-5 bg-slate-50 border border-slate-100/50 border border-slate-100 rounded-3xl focus:ring-4 focus:-amber-500/10 focus:-amber-500 outline-none transition-all text-slate-900 font-medium placeholder:text-gray-300"
+                    className="w-full pl-14 pr-6 py-5 bg-slate-50 border border-slate-200 rounded-3xl focus:ring-4 focus:ring-amber-500/10 focus:border-amber-500 outline-none transition-all text-slate-900 font-medium placeholder:text-gray-300"
                     value={txnSearch}
                     onChange={(e) => setTxnSearch(e.target.value)}
                   />
@@ -223,8 +224,8 @@ export default function ReturnBookForm({ onSuccess }) {
                 <div className="space-y-6">
                   <div>
                     <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-3 opacity-60">Borrower Information</p>
-                    <div className="flex items-center gap-4 p-4 -slate-950/5 rounded-2xl border text-slate-900/5">
-                      <div className="w-12 h-12 bgbg-slate-900 text-white rounded-xl flex items-center justify-center font-bold text-lg">
+                    <div className="flex items-center gap-4 p-4 bg-slate-50 rounded-2xl border border-slate-100">
+                      <div className="w-12 h-12 bg-slate-900 text-white rounded-xl flex items-center justify-center font-bold text-lg">
                         {transaction.memberId?.name?.[0]}
                       </div>
                       <div>
@@ -250,7 +251,7 @@ export default function ReturnBookForm({ onSuccess }) {
 
                 <div className="flex flex-col justify-between p-6 bg-slate-50 border border-slate-100 rounded-3xl border border-slate-100 relative group overflow-hidden">
                   {/* Background icon decoration */}
-                  <IndianRupee className="absolute -right-4 -bottom-4 text-gray-200/50 group-hover:-amber-500/10 transition-colors" size={100} />
+                  <IndianRupee className="absolute -right-4 -bottom-4 text-gray-200/50 group-hover:text-amber-500/10 transition-colors" size={100} />
 
                   <div>
                     <p className="text-xs font-bold text-slate-500 uppercase mb-1 tracking-widest opacity-60">Due Date</p>
@@ -288,7 +289,7 @@ export default function ReturnBookForm({ onSuccess }) {
                   <button
                     onClick={handlePayFine}
                     disabled={submitting}
-                    className="flex-[1.5] text-red-500 text-slate-900 py-5 rounded-3xl font-bold text-lg flex items-center justify-center gap-3 shadow-xl shadow-danger/20 hover:bg-red-600 transition-all hover:-translate-y-1 active:translate-y-0"
+                    className="flex-[1.5] bg-red-600 text-white py-5 rounded-3xl font-bold text-lg flex items-center justify-center gap-3 shadow-xl shadow-red-200 hover:bg-red-700 transition-all hover:-translate-y-1 active:translate-y-0"
                   >
                     {submitting ? (
                       <Loader2 className="animate-spin" size={28} />
@@ -303,7 +304,7 @@ export default function ReturnBookForm({ onSuccess }) {
                   <button
                     onClick={handleReturn}
                     disabled={submitting}
-                    className="flex-[1.5] text-emerald-500 text-slate-900 py-5 rounded-3xl font-bold text-lg flex items-center justify-center gap-3 shadow-xl shadow-success/20 hover:bg-green-600 transition-all hover:-translate-y-1 active:translate-y-0"
+                    className="flex-[1.5] bg-emerald-600 text-white py-5 rounded-3xl font-bold text-lg flex items-center justify-center gap-3 shadow-xl shadow-emerald-200 hover:bg-emerald-700 transition-all hover:-translate-y-1 active:translate-y-0"
                   >
                     {submitting ? (
                       <Loader2 className="animate-spin" size={28} />

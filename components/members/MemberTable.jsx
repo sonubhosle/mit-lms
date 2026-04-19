@@ -8,7 +8,8 @@ import {
   ChevronLeft,
   ChevronRight,
   Eye,
-  Phone
+  Phone,
+  Mail
 } from 'lucide-react'
 import Badge from '@/components/ui/Badge'
 import LoadingSpinner from '@/components/ui/LoadingSpinner'
@@ -59,10 +60,10 @@ export default function MemberTable({ onEdit, onDelete }) {
         <table className="animate-fade-in w-full text-left border-collapse [&_th]:border-b-2 [&_th]:border-slate-100   [&_th]:text-slate-500 [&_th]:font-bold [&_th]:py-4 [&_th]:px-6 [&_th]:sticky [&_th]:top-0 [&_th]:z-10 [&_tbody_tr]:bg-white shadow-xl shadow-slate-200/50 [&_tbody_tr]:border-b [&_tbody_tr]:border-slate-100 [&_tbody_tr:hover]:bg-slate-50 [&_tbody_tr]:transition-colors [&_tbody_tr:nth-child(even)]:bg-slate-50 border border-slate-100/50 [&_td]:py-4 [&_td]:px-6">
           <thead>
             <tr>
-              <th>Name & Contact</th>
+              <th>Name</th>
+              <th>Contact</th>
               <th>Class</th>
               <th className="text-center">Books Issued</th>
-              <th>Fine Status</th>
               <th>Account</th>
               <th className="text-right">Actions</th>
             </tr>
@@ -77,13 +78,15 @@ export default function MemberTable({ onEdit, onDelete }) {
                 return (
                   <tr key={member._id}>
                     <td>
-                      <div className="flex flex-col">
-                        <span className="font-bold text-slate-900">{member.name}</span>
-                        <div className="flex items-center gap-2 text-[10px] text-slate-500 font-medium">
-                          <span className="flex items-center gap-1"><Phone size={10} /> {member.phone}</span>
-                          <span className="opacity-30">|</span>
-                          <span>{member.email}</span>
-                        </div>
+                      <div className="flex ">
+                        <span className="font-semibold text-slate-800 max-w-[200px] wrap-break-word">
+                          {member.name}
+                        </span>                 </div>
+                    </td>
+                    <td>
+                      <div className="text-[13px] text-slate-600 font-medium">
+                        <span className="flex items-center gap-1"><Phone size={10} /> {member.phone}</span>
+                        <span className="flex items-center gap-1"><Mail size={10} />{member.email}</span>
                       </div>
                     </td>
                     <td>
@@ -91,23 +94,10 @@ export default function MemberTable({ onEdit, onDelete }) {
                         {member.className}
                       </span>
                     </td>
-                    <td className="text-center">
-                      <div className="inline-flex items-center justify-center w-8 h-8 text-slate-600 rounded-full  border border-slate-200  text-sm ">
-                        {member.activeIssues || 0}
+                    <td >
+                      <div className="inline-flex items-center px-3 py-1 rounded-2xl text-slate-800  border border-slate-100  text-sm ">
+                        Issued {member.activeIssues || 0}
                       </div>
-                    </td>
-                    <td>
-                      {member.finesDue > 0 ? (
-                        <div className="flex flex-col gap-1">
-                          <span className="text-red-500 font-black text-sm">₹{member.finesDue}</span>
-                          <span className="text-[9px] font-bold text-red-500  px-2 py-0.5 rounded-full uppercase tracking-tighter w-fit">Unpaid</span>
-                        </div>
-                      ) : (
-                        <div className="flex flex-col gap-1">
-                          <span className="text-emerald-500 font-bold text-sm">₹0</span>
-                          <span className="text-[9px] font-bold text-emerald-500  px-2 py-0.5 rounded-full uppercase tracking-tighter w-fit">All Paid</span>
-                        </div>
-                      )}
                     </td>
                     <td>
                       <Badge variant={member.isActive ? 'success' : 'danger'}>

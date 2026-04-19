@@ -77,13 +77,13 @@ export default function SessionTimeout() {
             <span>{Math.floor(timeLeft / 60)}:{String(timeLeft % 60).padStart(2, '0')}</span>
           </div>
           <div className="grid grid-cols-2 gap-4 w-full">
-            <button 
+            <button
               onClick={handleLogout}
-              className="px-6 py-3 border border-slate-200 rounded-xl text-slate-500 font-bold hover:bg-slate-50 border border-slate-100 transition-colors"
+              className="px-6 py-3 border border-slate-100 rounded-xl text-slate-500 font-bold hover:bg-slate-50 border border-slate-100 transition-colors"
             >
               Logout Now
             </button>
-            <button 
+            <button
               onClick={() => {
                 setShowWarning(false)
                 // Activity will trigger the event listener to reset

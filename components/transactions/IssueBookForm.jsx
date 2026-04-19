@@ -90,8 +90,7 @@ export default function IssueBookForm({ onSuccess, initialBookId }) {
 
   return (
     <div className="py-8">
-      {/* ... Stepper logic stays same ... */}
-      {/* Stepper */}
+
       <div className="flex items-center justify-between mb-12 relative max-w-2xl mx-auto">
         {/* Background Line */}
         <div className="absolute top-6 left-0 w-full h-0.5 bg-slate-100 z-0">
@@ -109,8 +108,8 @@ export default function IssueBookForm({ onSuccess, initialBookId }) {
             <div key={s} className="flex flex-col items-center relative z-10">
               <div className={clsx(
                 "w-12 h-12 rounded-full flex items-center justify-center font-bold transition-all duration-500",
-                isCompleted ? "bg-slate-900 text-slate-900 shadow-lg" :
-                  isActive ? "bg-slate-900 text-slate-900 shadow-xl shadow-slate-900/20 animate-ripple" :
+                isCompleted ? "bg-slate-900 text-white shadow-lg" :
+                  isActive ? "bg-slate-900 text-white shadow-xl shadow-slate-900/20 animate-ripple" :
                     "bg-slate-100 text-slate-500"
               )}>
                 {isCompleted ? (
@@ -141,7 +140,7 @@ export default function IssueBookForm({ onSuccess, initialBookId }) {
                 autoFocus
                 type="text"
                 placeholder="Search by name, ID, or mobile..."
-                className="w-full pl-12 pr-4 py-4 bg-slate-50  border border-slate-100 rounded-2xl focus:ring-4 focus:-slate-900/5 focus:-slate-900 outline-none"
+                className="w-full pl-10 pr-4 py-4 border border-slate-100 focus:border-amber-400 rounded-2xl outline-none focus:ring-3 focus:ring-amber-500/20 transition ease-in duration-300"
                 value={memberSearch}
                 onChange={(e) => searchMembers(e.target.value)}
               />
@@ -153,7 +152,7 @@ export default function IssueBookForm({ onSuccess, initialBookId }) {
                   onClick={() => { setSelectedMember(m); setStep(selectedBook ? 3 : 2); }}
                   className="w-full flex items-center gap-4 p-4 hover:-slate-900/5 border border-slate-100 rounded-2xl transition-all group"
                 >
-                  <div className="w-12 h-12 rounded-full flex items-center justify-center bg-slate-900 font-bold">
+                  <div className="w-12 h-12 text-white rounded-full flex items-center justify-center bg-slate-900 font-bold">
                     {m.name[0]}
                   </div>
                   <div className="text-left flex-1">
@@ -179,7 +178,7 @@ export default function IssueBookForm({ onSuccess, initialBookId }) {
                 autoFocus
                 type="text"
                 placeholder="Search by title, author, or ISBN..."
-                className="w-full pl-12 pr-4 py-4 bg-slate-50  border border-slate-100 rounded-2xl focus:ring-4 focus:-slate-900/5 focus:-slate-900 outline-none"
+                className="w-full pl-10 pr-4 py-4 border border-slate-100 focus:border-amber-400 rounded-2xl outline-none focus:ring-3 focus:ring-amber-500/20 transition ease-in duration-300"
                 value={bookSearch}
                 onChange={(e) => searchBooks(e.target.value)}
               />
@@ -192,7 +191,7 @@ export default function IssueBookForm({ onSuccess, initialBookId }) {
                   onClick={() => { setSelectedBook(b); setStep(3); }}
                   className="w-full flex items-center gap-4 p-4 hover:-slate-900/5 border border-slate-100 rounded-2xl transition-all group disabled:opacity-50"
                 >
-                  <div className="w-10 h-14  rounded flex items-center justify-center bg-slate-900 border border-slate-200">
+                  <div className="w-10 h-10 text-white  rounded-full flex items-center justify-center bg-slate-900 border border-slate-100">
                     <Book size={20} />
                   </div>
                   <div className="text-left flex-1">
@@ -203,7 +202,7 @@ export default function IssueBookForm({ onSuccess, initialBookId }) {
                 </button>
               ))}
             </div>
-            <button onClick={() => setStep(1)} className="text-slate-500 text-sm font-bold hover:-slate-900 uppercase tracking-wider">Back to member search</button>
+            <button onClick={() => setStep(1)} className="px-4 py-2 rounded-3xl bg-linear-to-r from-amber-400 to-amber-500 text-white text-sm font-bold hover:-slate-900 uppercase tracking-wider">Back to member search</button>
           </div>
         )}
 
@@ -214,7 +213,7 @@ export default function IssueBookForm({ onSuccess, initialBookId }) {
               <div className="p-6 bg-slate-50 border  rounded-2xl border-slate-100">
                 <div className="text-xs font-bold text-slate-500 uppercase mb-4 tracking-widest">Borrower</div>
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-full bgbg-slate-900 text-white flex items-center justify-center font-bold">
+                  <div className="w-12 h-12 rounded-full bg-slate-900 text-white flex items-center justify-center font-bold">
                     {selectedMember.name[0]}
                   </div>
                   <div>
@@ -226,7 +225,7 @@ export default function IssueBookForm({ onSuccess, initialBookId }) {
               <div className="p-6 bg-slate-50  rounded-2xl border border-slate-100">
                 <div className="text-xs font-bold text-slate-500 uppercase mb-4 tracking-widest">Book Selection</div>
                 <div className="flex items-center gap-4">
-                  <div className="w-10 h-14 bgbg-slate-900 text-white flex items-center justify-center rounded shadow-md">
+                  <div className="w-12 h-12 bg-slate-900 text-white rounded-full flex items-center justify-center  shadow-md">
                     <Book size={24} />
                   </div>
                   <div>
@@ -242,17 +241,17 @@ export default function IssueBookForm({ onSuccess, initialBookId }) {
                 <Calendar size={14} className="text-amber-500" />
                 Loan Duration (Days)
               </label>
-              <div className="flex items-center gap-4">
-                <div className="relative flex-1">
+              <div className="flex items-center  justify-between">
+                <div className="relative flex items-center gap-4">
                   <input
                     type="number"
                     min="1"
                     max="365"
                     value={loanDays}
                     onChange={(e) => setLoanDays(Math.max(1, parseInt(e.target.value) || 1))}
-                    className="w-full px-5 py-3 bg-white shadow-xl shadow-slate-200/50 border border-slate-100 rounded-xl focus:ring-4 focus:-amber-500/10 focus:-amber-500 outline-none font-black text-2xl text-slate-900 text-center"
+                    className="w-20  text-slate-700 text-xl font-semibold  placeholder:text-slate-500 pl-5 pr-4 py-4 border border-slate-100 focus:border-amber-400 rounded-2xl outline-none focus:ring-3 focus:ring-amber-500/20 transition ease-in duration-300"
                   />
-                  <span className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 text-sm font-medium">days</span>
+                  <p className=" text-slate-600 text-xl font-medium ">In Days</p>
                 </div>
                 <div className="text-center bg-white shadow-xl shadow-slate-200/50 border border-slate-100 rounded-xl px-5 py-3 min-w-[160px]">
                   <p className="text-[10px] text-slate-500 uppercase font-bold tracking-widest mb-1">Due Date</p>
@@ -278,7 +277,7 @@ export default function IssueBookForm({ onSuccess, initialBookId }) {
               <button
                 onClick={handleIssue}
                 disabled={loading}
-                className="flex-1 relative overflow-hidden bg-linear-to-r from-indigo-500 via-purple-500 to-indigo-500 text-white font-bold shadow-[0_0_20px_rgba(99,102,241,0.3)] hover:shadow-[0_0_30px_rgba(236,72,153,0.5)] hover:-translate-y-1 hover:scale-[1.02] active:translate-y-0 active:scale-95 transition-all duration-300 rounded-2xl py-4 flex items-center justify-center gap-2 disabled:opacity-50"
+                className="flex-1 relative overflow-hidden bg-linear-to-r from-amber-400 via-amber-500 to-amber-600 text-white font-bold shadow-[0_0_20px_rgba(99,102,241,0.3)] hover:shadow-[0_0_30px_rgba(236,72,153,0.5)] hover:-translate-y-1 hover:scale-[1.02] active:translate-y-0 active:scale-95 transition-all duration-300 rounded-2xl py-4 flex items-center justify-center gap-2 disabled:opacity-50"
               >
                 {loading ? <Loader2 className="animate-spin" size={24} /> : "Confirm & Issue Book"}
               </button>

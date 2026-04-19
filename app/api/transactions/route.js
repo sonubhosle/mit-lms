@@ -20,7 +20,9 @@ export async function GET(req) {
     const search = searchParams.get('search')
 
     let query = {}
-    if (status) query.status = status
+    if (status) {
+      query.status = status.includes(',') ? { $in: status.split(',') } : status
+    }
     if (memberId) query.memberId = memberId
     if (search) {
       query.$or = [

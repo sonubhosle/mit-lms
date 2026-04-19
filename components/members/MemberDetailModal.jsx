@@ -91,7 +91,6 @@ export default function MemberDetailModal({ isOpen, onClose, member }) {
               { icon: <Phone size={14} />, label: 'Phone', value: member.phone || '—' },
               { icon: <MapPin size={14} />, label: 'Address', value: member.address || '—' },
               { icon: <Calendar size={14} />, label: 'Joined', value: member.createdAt ? format(new Date(member.createdAt), 'dd MMM yyyy') : '—' },
-              { icon: <IndianRupee size={14} />, label: 'Fines Due', value: member.finesDue > 0 ? `₹${member.finesDue}` : '₹0 (Clear)' },
             ].map((item, i) => (
               <div key={i} className="flex items-start gap-3 p-5 border-b border-r border-gray-50">
                 <span className="text-amber-500 mt-0.5">{item.icon}</span>
@@ -104,7 +103,7 @@ export default function MemberDetailModal({ isOpen, onClose, member }) {
           </div>
 
           {/* Stats Row */}
-          <div className="grid grid-cols-3 divide-x divide-gray-100 border-b border-slate-100">
+          <div className="grid grid-cols-2 divide-x divide-gray-100 border-b border-slate-100">
             <div className="text-center p-5">
               <p className="text-3xl font-black text-slate-900">{activeIssues.length}</p>
               <p className="text-[10px] text-slate-500 uppercase font-bold tracking-widest mt-1">Currently Issued</p>
@@ -112,12 +111,6 @@ export default function MemberDetailModal({ isOpen, onClose, member }) {
             <div className="text-center p-5">
               <p className="text-3xl font-black text-slate-900">{history.length}</p>
               <p className="text-[10px] text-slate-500 uppercase font-bold tracking-widest mt-1">History Records</p>
-            </div>
-            <div className="text-center p-5">
-              <p className={`text-3xl font-black ${member.finesDue > 0 ? '-red-500' : '-emerald-500'}`}>
-                ₹{member.finesDue || 0}
-              </p>
-              <p className="text-[10px] text-slate-500 uppercase font-bold tracking-widest mt-1">Outstanding Fine</p>
             </div>
           </div>
 

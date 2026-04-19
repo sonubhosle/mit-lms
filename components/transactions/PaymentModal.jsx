@@ -159,7 +159,7 @@ export default function PaymentModal({ isOpen, onClose, transaction: initialTxn,
                         value={daysLate}
                         onChange={(e) => setDaysLate(e.target.value)}
                         placeholder="e.g. 6"
-                        className="w-24 px-3 py-2 border border-slate-200 rounded-xl font-bold text-center text-slate-900 focus:ring-2 focus:-amber-500/20 focus:-amber-500 outline-none"
+                        className="w-24 px-3 py-2 border border-slate-100 rounded-xl font-bold text-center text-slate-900 focus:ring-2 focus:-amber-500/20 focus:-amber-500 outline-none"
                       />
                       <span className="text-sm text-slate-500 font-medium">× ₹{RATE_PER_DAY}/day = </span>
                       <span className="text-lg font-black text-red-500">₹{(parseInt(daysLate) || 0) * RATE_PER_DAY}</span>
@@ -178,7 +178,7 @@ export default function PaymentModal({ isOpen, onClose, transaction: initialTxn,
                       value={customRemarks}
                       onChange={(e) => setCustomRemarks(e.target.value)}
                       placeholder="Optional note for invoice..."
-                      className="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:-amber-500/20 focus:-amber-500 outline-none"
+                      className="w-full px-3 py-2 border border-slate-100 rounded-xl text-sm focus:ring-2 focus:-amber-500/20 focus:-amber-500 outline-none"
                     />
                   </div>
                 </div>
